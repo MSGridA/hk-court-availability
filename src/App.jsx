@@ -197,7 +197,7 @@ export default function App() {
   return (
     <main className="min-h-screen bg-stone-50 text-stone-950">
       <section className="border-b border-stone-200 bg-white">
-        <div className="mx-auto max-w-[1900px] px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-[1900px] px-4 py-5 sm:px-6 lg:px-8">
           <p className="mb-3 inline-flex rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800">
             {copy.badge}
           </p>
@@ -208,11 +208,7 @@ export default function App() {
                 {copy.title}
               </h1>
 
-              <p className="mt-4 max-w-4xl text-base leading-7 text-stone-600">
-                {copy.subtitle}
-              </p>
-
-              <div className="mt-4 flex flex-wrap items-center gap-2">
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <span
                   className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
                     status === "ready"
@@ -244,7 +240,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1900px] px-4 py-6 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-[1900px] px-4 py-4 sm:px-6 lg:px-8">
         <div className="md:hidden">
           <SummaryCards activeSport={safeActiveSport} setActiveSport={setActiveSport} />
         </div>
@@ -318,6 +314,7 @@ export default function App() {
     </main>
   );
 }
+
 
 
 

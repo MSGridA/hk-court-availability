@@ -38,7 +38,6 @@ export default function FilterBar({
   resetFilters,
   refreshData,
   status,
-  lastUpdated,
   error,
 }) {
   const [open, setOpen] = useState(true);
@@ -123,35 +122,41 @@ export default function FilterBar({
 
       {open && (
         <div className="mt-4">
-          <div className="grid gap-3 xl:grid-cols-[1fr] xl:items-end">
-            <div>
-              <span className="mb-1 block text-sm font-medium text-stone-600">
-                Time / Availability
-              </span>
+          <div>
+            <span className="mb-1 block text-sm font-medium text-stone-600">
+              Time / Availability
+            </span>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <TimeBlockSwitch timeBlock={timeBlock} setTimeBlock={setTimeBlock} />
+            <div className="flex flex-wrap items-center gap-2">
+              <TimeBlockSwitch timeBlock={timeBlock} setTimeBlock={setTimeBlock} />
 
-                <button
-                  type="button"
-                  onClick={() => setAvailableOnly(!availableOnly)}
-                  className={`h-11 shrink-0 rounded-2xl border px-4 text-sm font-semibold transition ${
-                    availableOnly
-                      ? "border-emerald-200 bg-emerald-600 text-white shadow-sm hover:bg-emerald-700"
-                      : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-900"
-                  }`}
-                >
-                  Available only
-                </button>
+              <button
+                type="button"
+                onClick={() => setAvailableOnly(!availableOnly)}
+                className={`h-11 shrink-0 rounded-2xl border px-4 text-sm font-semibold transition ${
+                  availableOnly
+                    ? "border-emerald-200 bg-emerald-600 text-white shadow-sm hover:bg-emerald-700"
+                    : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-900"
+                }`}
+              >
+                Available only
+              </button>
 
-                <button
-                  type="button"
-                  onClick={resetFilters}
-                  className="h-11 shrink-0 rounded-2xl border border-stone-200 bg-white px-4 text-sm font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
-                >
-                  Reset
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="h-11 shrink-0 rounded-2xl border border-stone-200 bg-white px-4 text-sm font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
+              >
+                Reset
+              </button>
+
+              <button
+                type="button"
+                onClick={refreshData}
+                className="h-11 shrink-0 rounded-2xl border border-stone-200 bg-white px-4 text-sm font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
+              >
+                Refresh
+              </button>
             </div>
           </div>
 
@@ -161,37 +166,6 @@ export default function FilterBar({
           />
         </div>
       )}
-
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div className="flex flex-wrap gap-3 text-xs text-stone-500">
-          <span className="inline-flex items-center gap-2">
-            <span className="inline-block h-3 w-3 rounded bg-emerald-100 ring-1 ring-emerald-200" />
-            Available
-          </span>
-
-          <span className="inline-flex items-center gap-2">
-            <span className="inline-block h-3 w-3 rounded bg-stone-50 ring-1 ring-stone-100" />
-            No available court shown
-          </span>
-
-          <span>Numbers mean available courts for that hourly session.</span>
-        </div>
-
-        <div className="flex items-center justify-end gap-3">
-          <p className="text-right text-sm text-stone-500">
-            Status: <span className="font-medium text-stone-800">{status}</span>
-            {lastUpdated ? ` · refreshed ${lastUpdated.toLocaleTimeString()}` : ""}
-          </p>
-
-          <button
-            type="button"
-            onClick={refreshData}
-            className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
-          >
-            Refresh
-          </button>
-        </div>
-      </div>
 
       {(status === "sample" || status === "error") && (
         <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
