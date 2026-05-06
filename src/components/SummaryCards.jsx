@@ -42,7 +42,7 @@ export default function SummaryCards({ activeSport, setActiveSport, variant = "d
             type="button"
             onClick={() => setActiveSport(sport.id)}
             className={`rounded-2xl border text-left shadow-sm transition ${
-              isHero ? "p-3" : "p-2.5 md:p-5"
+              isHero ? "p-3" : "p-2 md:p-5"
             } ${
               active
                 ? "border-emerald-300 bg-emerald-50 ring-2 ring-emerald-100"
@@ -55,7 +55,7 @@ export default function SummaryCards({ activeSport, setActiveSport, variant = "d
                   className={
                     isHero
                       ? "truncate text-sm font-semibold leading-tight text-stone-950 xl:text-base"
-                      : "truncate text-xs font-semibold leading-tight text-stone-950 sm:text-sm md:text-lg"
+                      : "truncate text-[11px] font-semibold leading-tight text-stone-950 sm:text-sm md:text-lg"
                   }
                 >
                   {isHero ? (
@@ -72,7 +72,7 @@ export default function SummaryCards({ activeSport, setActiveSport, variant = "d
                   className={
                     isHero
                       ? "mt-1 truncate text-xs text-stone-600"
-                      : "mt-1 truncate text-[11px] text-stone-600 md:text-sm"
+                      : "mt-0.5 truncate text-[10px] text-stone-600 md:mt-1 md:text-sm"
                   }
                 >
                   {sport.titleTC}
@@ -101,3 +101,4 @@ export default function SummaryCards({ activeSport, setActiveSport, variant = "d
     </div>
   );
 }
+

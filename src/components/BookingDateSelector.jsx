@@ -31,9 +31,9 @@ function getDesktopDateLabel(index, date) {
 
 export default function BookingDateSelector({ availableDates, selectedDate, setSelectedDate }) {
   return (
-    <div className="mb-3 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm">
-      <div className="mb-2 flex items-center justify-between">
-        <p className="text-sm font-semibold text-stone-700">Booking Date</p>
+    <div className="mb-2 rounded-2xl border border-stone-200 bg-white p-2.5 shadow-sm sm:p-3">
+      <div className="mb-1.5 flex items-center justify-between">
+        <p className="text-xs font-semibold text-stone-700 sm:text-sm">Booking Date</p>
       </div>
 
       <div className="grid grid-cols-7 gap-1.5 md:gap-2">
@@ -45,7 +45,7 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
               key={date}
               type="button"
               onClick={() => setSelectedDate(date)}
-              className={`flex min-w-0 flex-col items-center justify-center rounded-xl border px-1 py-2 text-center transition md:px-2 ${
+              className={`flex min-w-0 flex-col items-center justify-center rounded-xl border px-1 py-1.5 text-center transition md:px-2 md:py-2 ${
                 active
                   ? "border-emerald-300 bg-emerald-50 ring-1 ring-emerald-100"
                   : "border-stone-200 bg-white hover:border-stone-300 hover:bg-stone-50"
@@ -70,5 +70,6 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     </div>
   );
 }
+
 
 
