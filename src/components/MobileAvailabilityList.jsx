@@ -22,13 +22,65 @@ function getCellClass(count) {
   return "bg-stone-50 text-stone-300 ring-1 ring-stone-100";
 }
 
-export default function MobileAvailabilityList({ gridRows, activeSport }) {
-  const [expandedVenueId, setExpandedVenueId] = useState(null);
-  const copy = SPORT_COPY[activeSport] || SPORT_COPY.tennis;
+function getAvailableSlots(venue) {
+  return venue.hourly.filter((cell) => cell.availableCourts > 0);
+}
 
-  function toggleVenue(id) {
-    setExpandedVenueId((current) => (current === id ? null : id));
-  }
+function MobileDrawer({ venue, onClose }) {
+  if (!venue) return null;
+
+  const availableSlots = getAvailableSlots(venue);
+
+  return (
+    <div className="fixed inset-x-3 bottom-3 z-50 rounded-3xl border border-stone-200 bg-white p-4 shadow-2xl md:hidden">
+      <div className="mb-2 inline-flex rounded-full bg-stone-100 px-2 py-0.5 text-[9px] font-semibold text-stone-500">
+        {venue.districtEN}
+      </div>
+
+      <p className="font-semibold text-stone-950">{venue.nameEN}</p>
+      {venue.nameTC && <p className="mt-0.5 text-xs text-stone-600">{venue.nameTC}</p>}
+
+      <p className="mt-2 text-xs text-stone-500">
+        Available:{" "}
+        {availableSlots.length > 0
+          ? availableSlots.map((cell) => `${cell.label} (${cell.availableCourts})`).join(" · ")
+          : "No available court shown."}
+      </p>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        <a
+          className="rounded-full border border-stone-200 px-3 py-1.5 text-xs font-semibold text-stone-600"
+          href={makeGoogleMapUrl(venue)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Map
+        </a>
+
+        <a
+          className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700"
+          href={SMARTPLAY_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Book
+        </a>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-full border border-stone-200 px-3 py-1.5 text-xs font-semibold text-stone-500"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default function MobileAvailabilityList({ gridRows, activeSport }) {
+  const [selectedVenue, setSelectedVenue] = useState(null);
+  const copy = SPORT_COPY[activeSport] || SPORT_COPY.tennis;
 
   if (gridRows.length === 0) {
     return (
@@ -45,40 +97,45 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
   const tableMinWidth = Math.max(560, venueColumnWidth + visibleHours.length * timeColumnWidth);
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:hidden">
-      <table className="w-full table-fixed border-collapse text-left text-xs" style={{ minWidth: `${tableMinWidth}px` }}>
-        <colgroup>
-          <col style={{ width: `${venueColumnWidth}px` }} />
-          {visibleHours.map((hour) => (
-            <col key={hour} style={{ width: `${timeColumnWidth}px` }} />
-          ))}
-        </colgroup>
-
-        <thead className="bg-stone-100 text-[9px] uppercase tracking-wide text-stone-500">
-          <tr>
-            <th className="sticky left-0 z-30 bg-stone-100 px-2 py-2 font-semibold">
-              Venue
-            </th>
-
+    <>
+      <div className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:hidden">
+        <table
+          className="w-full table-fixed border-collapse text-left text-xs"
+          style={{ minWidth: `${tableMinWidth}px` }}
+        >
+          <colgroup>
+            <col style={{ width: `${venueColumnWidth}px` }} />
             {visibleHours.map((hour) => (
-              <th key={hour} className="px-1 py-2 text-center font-semibold">
-                {String(hour).padStart(2, "0")}
-              </th>
+              <col key={hour} style={{ width: `${timeColumnWidth}px` }} />
             ))}
-          </tr>
-        </thead>
+          </colgroup>
 
-        <tbody>
-          {gridRows.map((venue) => {
-            const expanded = expandedVenueId === venue.id;
-            const availableSlots = venue.hourly.filter((cell) => cell.availableCourts > 0);
+          <thead className="bg-stone-100 text-[9px] uppercase tracking-wide text-stone-500">
+            <tr>
+              <th className="sticky left-0 z-30 bg-stone-100 px-2 py-2 font-semibold">
+                Venue
+              </th>
 
-            return (
-              <>
-                <tr key={venue.id} className="border-t border-stone-100">
+              {visibleHours.map((hour) => (
+                <th key={hour} className="px-1 py-2 text-center font-semibold">
+                  {String(hour).padStart(2, "0")}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {gridRows.map((venue) => {
+              const selected = selectedVenue?.id === venue.id;
+
+              return (
+                <tr
+                  key={venue.id}
+                  className={`border-t border-stone-100 ${selected ? "bg-emerald-50/40" : ""}`}
+                >
                   <td
                     className="sticky left-0 z-20 cursor-pointer bg-white px-2 py-2 shadow-[1px_0_0_0_rgba(231,229,228,1)]"
-                    onClick={() => toggleVenue(venue.id)}
+                    onClick={() => setSelectedVenue(venue)}
                   >
                     <div className="mb-0.5 max-w-[130px] truncate rounded-full bg-stone-100 px-1.5 py-0.5 text-[8px] font-semibold text-stone-500">
                       {venue.districtEN}
@@ -93,7 +150,7 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
                     <td key={cell.hour} className="px-1 py-2 text-center">
                       <button
                         type="button"
-                        onClick={() => toggleVenue(venue.id)}
+                        onClick={() => setSelectedVenue(venue)}
                         className={`mx-auto flex h-7 w-8 items-center justify-center rounded-lg text-[11px] font-bold ${getCellClass(
                           cell.availableCourts
                         )}`}
@@ -103,55 +160,13 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
                     </td>
                   ))}
                 </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
-                {expanded && (
-                  <tr className="border-t border-stone-100 bg-stone-50">
-                    <td colSpan={visibleHours.length + 1} className="px-2 py-2">
-                      <div className="rounded-2xl border border-stone-200 bg-white p-3">
-                        <p className="font-semibold text-stone-900">{venue.nameEN}</p>
-                        {venue.nameTC && <p className="mt-0.5 text-xs text-stone-600">{venue.nameTC}</p>}
-                        <p className="mt-1 text-xs text-stone-500">
-                          {venue.addressEN || "Address not provided"}
-                          {venue.addressTC ? ` · ${venue.addressTC}` : ""}
-                        </p>
-
-                        <p className="mt-2 text-xs text-stone-500">
-                          Available:{" "}
-                          {availableSlots.length > 0
-                            ? availableSlots
-                                .map((cell) => `${cell.label} (${cell.availableCourts})`)
-                                .join(" · ")
-                            : "No available court shown."}
-                        </p>
-
-                        <div className="mt-3 flex gap-2">
-                          <a
-                            className="rounded-full border border-stone-200 px-3 py-1.5 text-xs font-semibold text-stone-600"
-                            href={makeGoogleMapUrl(venue)}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Map
-                          </a>
-
-                          <a
-                            className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700"
-                            href={SMARTPLAY_URL}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Book
-                          </a>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+      <MobileDrawer venue={selectedVenue} onClose={() => setSelectedVenue(null)} />
+    </>
   );
 }
