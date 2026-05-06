@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { SMARTPLAY_URL } from "../config";
 import { makeGoogleMapUrl } from "../lib/maps";
 
@@ -141,8 +141,34 @@ function MobileDrawer({ venue, onClose }) {
 
 export default function MobileAvailabilityList({ gridRows, activeSport, selectedDate }) {
   const [selectedVenue, setSelectedVenue] = useState(null);
+  const gridScrollRef = useRef(null);
+
   const copy = SPORT_COPY[activeSport] || SPORT_COPY.tennis;
   const currentHour = getCurrentHourHK(selectedDate);
+
+  const firstVenue = gridRows[0];
+  const visibleHours = firstVenue?.hourly?.map((cell) => cell.hour) || [];
+  const visibleHourKey = visibleHours.join(",");
+
+  const venueColumnWidth = 150;
+  const timeColumnWidth = 36;
+  const tableMinWidth = Math.max(560, venueColumnWidth + visibleHours.length * timeColumnWidth);
+
+  useEffect(() => {
+    if (!gridScrollRef.current || currentHour === null) return;
+
+    const hourIndex = visibleHours.indexOf(currentHour);
+    if (hourIndex < 0) return;
+
+    const targetLeft = Math.max(0, venueColumnWidth + hourIndex * timeColumnWidth - 96);
+
+    window.requestAnimationFrame(() => {
+      gridScrollRef.current?.scrollTo({
+        left: targetLeft,
+        behavior: "smooth",
+      });
+    });
+  }, [currentHour, selectedDate, visibleHourKey]);
 
   if (gridRows.length === 0) {
     return (
@@ -152,15 +178,12 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
     );
   }
 
-  const firstVenue = gridRows[0];
-  const visibleHours = firstVenue?.hourly?.map((cell) => cell.hour) || [];
-  const venueColumnWidth = 150;
-  const timeColumnWidth = 36;
-  const tableMinWidth = Math.max(560, venueColumnWidth + visibleHours.length * timeColumnWidth);
-
   return (
     <>
-      <div className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:hidden">
+      <div
+        ref={gridScrollRef}
+        className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:hidden"
+      >
         <table
           className="w-full table-fixed border-collapse text-left text-xs"
           style={{ minWidth: `${tableMinWidth}px` }}
@@ -244,5 +267,3 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
     </>
   );
 }
-
-
