@@ -45,14 +45,14 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
               key={date}
               type="button"
               onClick={() => setSelectedDate(date)}
-              className={`min-w-0 rounded-xl border px-1.5 py-2 text-left transition md:px-2 ${
+              className={`flex min-w-0 flex-col items-center justify-center rounded-xl border px-1 py-2 text-center transition md:px-2 ${
                 active
                   ? "border-emerald-300 bg-emerald-50 ring-1 ring-emerald-100"
                   : "border-stone-200 bg-white hover:border-stone-300 hover:bg-stone-50"
               }`}
             >
               <p
-                className={`truncate text-[9px] font-semibold uppercase tracking-normal md:text-[10px] md:tracking-wide ${
+                className={`w-full text-center text-[9px] font-semibold uppercase tracking-normal leading-none md:text-[10px] md:tracking-wide ${
                   active ? "text-emerald-700" : "text-stone-400"
                 }`}
               >
@@ -60,7 +60,7 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
                 <span className="hidden md:inline">{getDesktopDateLabel(index, date)}</span>
               </p>
 
-              <p className="mt-0.5 text-sm font-semibold leading-none text-stone-950 md:text-lg">
+              <p className="mt-1 text-center text-sm font-semibold leading-none text-stone-950 md:text-lg">
                 {getMonthDay(date)}
               </p>
             </button>
@@ -70,4 +70,5 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     </div>
   );
 }
+
 
