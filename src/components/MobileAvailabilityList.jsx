@@ -152,7 +152,7 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
 
   const venueColumnWidth = 150;
   const timeColumnWidth = 36;
-  const tableMinWidth = Math.max(560, venueColumnWidth + visibleHours.length * timeColumnWidth);
+  const tableMinWidth = venueColumnWidth + visibleHours.length * timeColumnWidth;
 
   useEffect(() => {
     if (!gridScrollRef.current || currentHour === null) return;
@@ -185,7 +185,7 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
         className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:hidden"
       >
         <table
-          className="w-full table-fixed border-collapse text-left text-xs"
+          className="table-fixed border-collapse text-left text-xs"
           style={{ minWidth: `${tableMinWidth}px` }}
         >
           <colgroup>
@@ -267,3 +267,5 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
     </>
   );
 }
+
+
