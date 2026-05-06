@@ -66,7 +66,7 @@ export default function FilterBar({
       : `${selectedDistricts.length} districts`;
 
   return (
-    <div className="mb-3 space-y-2">
+    <div className="mb-2 space-y-2">
       <div className="rounded-2xl border border-stone-200 bg-white p-3 shadow-sm">
         <TimeBlockSwitch timeBlock={timeBlock} setTimeBlock={setTimeBlock} />
       </div>
@@ -175,4 +175,5 @@ export default function FilterBar({
     </div>
   );
 }
+
 
