@@ -34,9 +34,6 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     <div className="mb-5 rounded-3xl border border-stone-200 bg-white p-4 shadow-sm sm:p-5">
       <div className="mb-3">
         <p className="text-sm font-medium text-stone-600">Booking Date</p>
-        <p className="mt-1 text-xs text-stone-500">
-          Select one of the next 7 SmartPLAY booking days.
-        </p>
       </div>
 
       <div className="grid grid-cols-7 gap-1.5 md:gap-2">
@@ -73,3 +70,4 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     </div>
   );
 }
+

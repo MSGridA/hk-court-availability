@@ -20,6 +20,26 @@ function SearchIcon() {
   );
 }
 
+function RefreshIcon() {
+  return (
+    <svg
+      className="h-4 w-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 12a9 9 0 0 1-15.3 6.4" />
+      <path d="M3 12A9 9 0 0 1 18.3 5.6" />
+      <path d="M21 3v6h-6" />
+      <path d="M3 21v-6h6" />
+    </svg>
+  );
+}
+
 function getTimeBlockLabel(timeBlock) {
   if (timeBlock === "fullDay") return "Full Day";
   if (timeBlock === "before2pm") return "Before 2pm";
@@ -80,6 +100,16 @@ export default function FilterBar({
             title="Search"
           >
             <SearchIcon />
+          </button>
+
+          <button
+            type="button"
+            onClick={refreshData}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-stone-200 bg-white text-xs font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
+            aria-label="Refresh live data"
+            title="Refresh"
+          >
+            <RefreshIcon />
           </button>
 
           <button
@@ -148,14 +178,6 @@ export default function FilterBar({
                 className="h-11 shrink-0 rounded-2xl border border-stone-200 bg-white px-4 text-sm font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
               >
                 Reset
-              </button>
-
-              <button
-                type="button"
-                onClick={refreshData}
-                className="h-11 shrink-0 rounded-2xl border border-stone-200 bg-white px-4 text-sm font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
-              >
-                Refresh
               </button>
             </div>
           </div>
