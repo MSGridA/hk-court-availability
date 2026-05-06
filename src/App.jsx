@@ -7,12 +7,7 @@ import FilterBar from "./components/FilterBar";
 import Footer from "./components/Footer";
 import MobileAvailabilityList from "./components/MobileAvailabilityList";
 import SummaryCards from "./components/SummaryCards";
-import {
-  AFTER_6PM_HOURS,
-  AFTERNOON_HOURS,
-  BEFORE_2PM_HOURS,
-  FULL_DAY_HOURS,
-} from "./config";
+import { AFTER_6PM_HOURS, BEFORE_12_HOURS, FULL_DAY_HOURS, MIDDAY_HOURS } from "./config";
 import { usePersistentState } from "./hooks/usePersistentState";
 import { getNextBookingDatesHK, getTodayHK } from "./lib/dateTime";
 import { buildVenueGrid } from "./lib/availabilityGrid";
@@ -38,8 +33,11 @@ function getSafeSport(value) {
 
 function getSafeTimeBlock(value) {
   if (value === "after2pm") return "after6pm";
+  if (value === "before2pm") return "before12";
+  if (value === "before11") return "before12";
+  if (value === "afternoon") return "midday";
 
-  return ["fullDay", "before2pm", "afternoon", "after6pm"].includes(value)
+  return ["fullDay", "before12", "midday", "after6pm"].includes(value)
     ? value
     : "fullDay";
 }
@@ -128,8 +126,8 @@ export default function App() {
   }
 
   const visibleHours = useMemo(() => {
-    if (safeTimeBlock === "before2pm") return BEFORE_2PM_HOURS;
-    if (safeTimeBlock === "afternoon") return AFTERNOON_HOURS;
+    if (safeTimeBlock === "before12") return BEFORE_12_HOURS;
+    if (safeTimeBlock === "midday") return MIDDAY_HOURS;
     if (safeTimeBlock === "after6pm") return AFTER_6PM_HOURS;
     return FULL_DAY_HOURS;
   }, [safeTimeBlock]);
@@ -261,3 +259,5 @@ export default function App() {
     </main>
   );
 }
+
+

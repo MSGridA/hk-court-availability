@@ -17,19 +17,19 @@
       </button>
 
       <button
-        className={buttonClass("before2pm")}
-        onClick={() => setTimeBlock("before2pm")}
+        className={buttonClass("before12")}
+        onClick={() => setTimeBlock("before12")}
         type="button"
       >
-        Before 2
+        Before 12
       </button>
 
       <button
-        className={buttonClass("afternoon")}
-        onClick={() => setTimeBlock("afternoon")}
+        className={buttonClass("midday")}
+        onClick={() => setTimeBlock("midday")}
         type="button"
       >
-        2–6
+        12–6
       </button>
 
       <button

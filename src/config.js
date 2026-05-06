@@ -24,6 +24,6 @@ export const SPORTS_CONFIG = {
 };
 
 export const FULL_DAY_HOURS = Array.from({ length: 17 }, (_, index) => index + 6); // 06:00-23:00
-export const BEFORE_2PM_HOURS = Array.from({ length: 8 }, (_, index) => index + 6); // 06:00-14:00
-export const AFTERNOON_HOURS = Array.from({ length: 4 }, (_, index) => index + 14); // 14:00-18:00
+export const BEFORE_12_HOURS = Array.from({ length: 6 }, (_, index) => index + 6); // 06:00-12:00
+export const MIDDAY_HOURS = Array.from({ length: 6 }, (_, index) => index + 12); // 12:00-18:00
 export const AFTER_6PM_HOURS = Array.from({ length: 5 }, (_, index) => index + 18); // 18:00-23:00
