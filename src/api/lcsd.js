@@ -55,6 +55,14 @@ function extractRows(payload) {
   return [];
 }
 
+function normalizeCourtCount(...values) {
+  const text = values.map((value) => safeText(value)).find(Boolean);
+
+  if (!text) return "—";
+
+  const match = text.match(/\d+/);
+  return match ? match[0] : text;
+}
 function normalizeVenue(row, index) {
   const raw = row.properties || row;
 
@@ -72,10 +80,7 @@ function normalizeVenue(row, index) {
     nameTC: safeText(raw.Name_cn || raw.Venue_Name_TC),
     addressEN: safeText(raw.Address_en || raw.Venue_Address_EN),
     addressTC: safeText(raw.Address_cn || raw.Venue_Address_TC),
-    courts: safeText(
-      raw.Court_no_en || raw.Court_No_EN || raw.Court_no || raw.Available_Courts,
-      "—"
-    ),
+    courts: normalizeCourtCount(raw.Court_no_en, raw.Court_No_EN, raw.Court_no, raw.Available_Courts),
     openingEN: safeText(raw.Opening_hours_en || raw.Opening_Hours_EN),
     openingTC: safeText(raw.Opening_hours_cn || raw.Opening_Hours_TC),
     phone: safeText(raw.Phone || raw.Venue_Phone_No || raw["Venue_Phone_No."]),
@@ -204,3 +209,4 @@ export async function loadSportData(sportId) {
     };
   }
 }
+
