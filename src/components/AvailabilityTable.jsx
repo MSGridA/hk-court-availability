@@ -258,7 +258,7 @@ export default function AvailabilityTable({
                     }`}
                   >
                     <td
-                      className={`sticky left-0 z-20 cursor-pointer px-2.5 py-1.5 shadow-[1px_0_0_0_rgba(231,229,228,1)] transition ${
+                      className={`sticky left-0 z-20 cursor-pointer px-2.5 py-1.5 shadow-[2px_0_4px_-3px_rgba(0,0,0,0.35)] transition ${
                         selected
                           ? "bg-emerald-50"
                           : hovered
@@ -319,3 +319,5 @@ export default function AvailabilityTable({
     </>
   );
 }
+
+

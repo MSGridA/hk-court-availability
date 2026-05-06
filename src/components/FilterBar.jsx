@@ -70,11 +70,11 @@ export default function FilterBar({
         <TimeBlockSwitch timeBlock={timeBlock} setTimeBlock={setTimeBlock} />
       </div>
 
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center justify-between gap-2">
         <button
           type="button"
           onClick={() => setDistrictOpen(!districtOpen)}
-          className={`h-9 shrink-0 rounded-full border px-3 text-xs font-semibold shadow-sm transition ${
+          className={`h-9 max-w-[38vw] shrink-0 truncate rounded-full border px-3 text-xs font-semibold shadow-sm transition sm:max-w-none ${
             districtOpen || selectedDistricts.length > 0
               ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
               : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-900"
@@ -83,7 +83,7 @@ export default function FilterBar({
           {districtOpen ? "Hide districts" : selectedDistrictText}
         </button>
 
-        <div className="flex flex-wrap items-center justify-end gap-2">
+        <div className="flex min-w-0 flex-1 items-center justify-end gap-1.5 sm:gap-2">
           <button
             type="button"
             onClick={() => setSearchOpen(!searchOpen)}
@@ -98,30 +98,6 @@ export default function FilterBar({
             <SearchIcon />
           </button>
 
-          {searchOpen && (
-            <div className="min-w-[220px] flex-1 sm:w-[320px] sm:flex-none">
-              <div className="flex h-9 items-center gap-2 rounded-full border border-stone-200 bg-white px-3 shadow-sm ring-emerald-600 transition focus-within:ring-2">
-                <input
-                  className="w-full bg-transparent text-xs outline-none"
-                  placeholder="Search venue / district..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  autoFocus
-                />
-
-                {query && (
-                  <button
-                    type="button"
-                    onClick={() => setQuery("")}
-                    className="text-[11px] font-semibold text-stone-400 hover:text-stone-700"
-                  >
-                    Clear
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-
           <button
             type="button"
             onClick={refreshData}
@@ -135,24 +111,46 @@ export default function FilterBar({
           <button
             type="button"
             onClick={() => setAvailableOnly(!availableOnly)}
-            className={`h-9 shrink-0 rounded-full border px-3 text-xs font-semibold shadow-sm transition ${
+            className={`h-9 shrink-0 rounded-full border px-2.5 text-[11px] font-semibold shadow-sm transition sm:px-3 sm:text-xs ${
               availableOnly
                 ? "border-emerald-200 bg-emerald-600 text-white hover:bg-emerald-700"
                 : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-900"
             }`}
           >
-            Available only
+            Available
           </button>
 
           <button
             type="button"
             onClick={resetFilters}
-            className="h-9 shrink-0 rounded-full border border-stone-200 bg-white px-3 text-xs font-semibold text-stone-600 shadow-sm transition hover:bg-stone-50 hover:text-stone-900"
+            className="h-9 shrink-0 rounded-full border border-stone-200 bg-white px-2.5 text-[11px] font-semibold text-stone-600 shadow-sm transition hover:bg-stone-50 hover:text-stone-900 sm:px-3 sm:text-xs"
           >
             Reset
           </button>
         </div>
       </div>
+
+      {searchOpen && (
+        <div className="flex h-9 items-center gap-2 rounded-full border border-stone-200 bg-white px-3 shadow-sm ring-emerald-600 transition focus-within:ring-2">
+          <input
+            className="w-full bg-transparent text-xs outline-none"
+            placeholder="Search venue / district..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            autoFocus
+          />
+
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              className="text-[11px] font-semibold text-stone-400 hover:text-stone-700"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+      )}
 
       {districtOpen && (
         <DistrictSelector

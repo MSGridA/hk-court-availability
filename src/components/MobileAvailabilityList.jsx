@@ -172,9 +172,9 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
             ))}
           </colgroup>
 
-          <thead className="bg-stone-100 text-[9px] uppercase tracking-wide text-stone-500">
+          <thead className="sticky top-0 z-30 bg-stone-100 text-[9px] uppercase tracking-wide text-stone-500">
             <tr>
-              <th className="sticky left-0 z-30 bg-stone-100 px-2 py-2 font-semibold">
+              <th className="sticky left-0 z-40 bg-stone-100 px-2 py-2 font-semibold shadow-[1px_0_0_0_rgba(214,211,209,1)]">
                 Venue
               </th>
 
@@ -202,7 +202,7 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
                   className={`border-t border-stone-100 ${selected ? "bg-emerald-50/40" : ""}`}
                 >
                   <td
-                    className="sticky left-0 z-20 cursor-pointer bg-white px-2 py-2 shadow-[1px_0_0_0_rgba(231,229,228,1)]"
+                    className="sticky left-0 z-20 cursor-pointer bg-white px-2 py-2 shadow-[2px_0_4px_-3px_rgba(0,0,0,0.35)]"
                     onClick={() => setSelectedVenue(venue)}
                   >
                     <div className="mb-0.5 max-w-[130px] truncate rounded-full bg-stone-100 px-1.5 py-0.5 text-[8px] font-semibold text-stone-500">
@@ -244,3 +244,5 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
     </>
   );
 }
+
+
