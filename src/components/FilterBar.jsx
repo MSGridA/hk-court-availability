@@ -53,6 +53,7 @@ export default function FilterBar({
   refreshData,
   status,
   error,
+  visibleVenueCount,
 }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [districtOpen, setDistrictOpen] = useState(false);
@@ -71,7 +72,8 @@ export default function FilterBar({
       </div>
 
       <div className="flex items-center justify-between gap-2">
-        <button
+        <div className="flex shrink-0 items-center gap-2">
+          <button
           type="button"
           onClick={() => setDistrictOpen(!districtOpen)}
           className={`h-9 max-w-[38vw] shrink-0 truncate rounded-full border px-3 text-xs font-semibold shadow-sm transition sm:max-w-none ${
@@ -81,7 +83,13 @@ export default function FilterBar({
           }`}
         >
           {districtOpen ? "Hide districts" : selectedDistrictText}
-        </button>
+          </button>
+
+          <span className="hidden rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-semibold text-stone-500 sm:inline-flex">
+            Showing {visibleVenueCount}
+            {availableOnly ? " available" : ""}
+          </span>
+        </div>
 
         <div className="flex min-w-0 flex-1 items-center justify-end gap-1.5 sm:gap-2">
           <button
@@ -167,3 +175,4 @@ export default function FilterBar({
     </div>
   );
 }
+

@@ -239,6 +239,7 @@ export default function App() {
           refreshData={loadData}
           status={status}
           error={error}
+          visibleVenueCount={gridRows.length}
         />
 
         <MobileAvailabilityList
@@ -261,6 +262,7 @@ export default function App() {
     </main>
   );
 }
+
 
 
 
