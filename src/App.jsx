@@ -4,6 +4,7 @@ import { loadSportData } from "./api/lcsd";
 import AvailabilityTable from "./components/AvailabilityTable";
 import BookingDateSelector from "./components/BookingDateSelector";
 import FilterBar from "./components/FilterBar";
+import Footer from "./components/Footer";
 import MobileAvailabilityList from "./components/MobileAvailabilityList";
 import SummaryCards from "./components/SummaryCards";
 import { AFTER_2PM_HOURS, BEFORE_2PM_HOURS, FULL_DAY_HOURS } from "./config";
@@ -292,7 +293,10 @@ export default function App() {
           </div>
         )}
       </section>
+
+      <Footer />
     </main>
   );
 }
+
 
