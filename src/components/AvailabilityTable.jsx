@@ -19,10 +19,10 @@ const SPORT_TABLE_COPY = {
 
 function getCellClass(count) {
   if (count > 0) {
-    return "bg-emerald-100 text-emerald-900 ring-1 ring-emerald-200 hover:bg-emerald-200";
+    return "bg-emerald-100 text-emerald-900 ring-1 ring-emerald-300 hover:bg-emerald-200";
   }
 
-  return "bg-white text-stone-300 ring-1 ring-stone-200";
+  return "bg-stone-100 text-stone-300 ring-1 ring-stone-200";
 }
 
 function getHourColumnClass(hour) {
@@ -231,7 +231,7 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
                         <button
                           type="button"
                           onClick={() => setSelectedVenue(venue)}
-                          className={`mx-auto flex h-7 w-8 items-center justify-center rounded-lg text-xs font-bold transition ${getCellClass(
+                          className={`mx-auto flex h-5.5 w-6.5 items-center justify-center rounded-md text-[11px] font-bold transition ${getCellClass(
                             cell.availableCourts
                           )}`}
                           title={`${venue.nameEN} · ${cell.label} · ${cell.availableCourts}`}
@@ -252,4 +252,10 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
     </>
   );
 }
+
+
+
+
+
+
 

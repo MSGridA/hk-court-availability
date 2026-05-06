@@ -16,10 +16,10 @@ const SPORT_COPY = {
 
 function getCellClass(count) {
   if (count > 0) {
-    return "bg-emerald-100 text-emerald-900 ring-1 ring-emerald-200";
+    return "bg-emerald-100 text-emerald-900 ring-1 ring-emerald-300";
   }
 
-  return "bg-white text-stone-300 ring-1 ring-stone-200";
+  return "bg-stone-100 text-stone-300 ring-1 ring-stone-200";
 }
 
 function getHourColumnClass(hour) {
@@ -190,7 +190,7 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
                       <button
                         type="button"
                         onClick={() => setSelectedVenue(venue)}
-                        className={`mx-auto flex h-7 w-8 items-center justify-center rounded-lg text-[11px] font-bold ${getCellClass(
+                        className={`mx-auto flex h-5.5 w-6.5 items-center justify-center rounded-md text-[10px] font-bold ${getCellClass(
                           cell.availableCourts
                         )}`}
                       >
@@ -209,4 +209,10 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
     </>
   );
 }
+
+
+
+
+
+
 
