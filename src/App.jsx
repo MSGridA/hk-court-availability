@@ -211,6 +211,26 @@ export default function App() {
               <p className="mt-4 max-w-4xl text-base leading-7 text-stone-600">
                 {copy.subtitle}
               </p>
+
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span
+                  className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                    status === "ready"
+                      ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100"
+                      : status === "loading"
+                      ? "bg-stone-100 text-stone-600 ring-1 ring-stone-200"
+                      : "bg-amber-50 text-amber-700 ring-1 ring-amber-100"
+                  }`}
+                >
+                  {status === "ready" ? "Live data" : status === "loading" ? "Loading data" : "Data warning"}
+                </span>
+
+                {lastUpdated && (
+                  <span className="inline-flex rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-500 ring-1 ring-stone-200">
+                    Updated {lastUpdated.toLocaleTimeString()}
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="hidden shrink-0 md:block">
@@ -298,5 +318,6 @@ export default function App() {
     </main>
   );
 }
+
 
 
