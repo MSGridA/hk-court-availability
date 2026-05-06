@@ -9,6 +9,14 @@
   return (
     <div className="grid w-[330px] shrink-0 grid-cols-3 rounded-2xl border border-stone-200 bg-stone-100 p-1 shadow-sm">
       <button
+        className={buttonClass("fullDay")}
+        onClick={() => setTimeBlock("fullDay")}
+        type="button"
+      >
+        Full Day
+      </button>
+
+      <button
         className={buttonClass("before2pm")}
         onClick={() => setTimeBlock("before2pm")}
         type="button"
@@ -22,14 +30,6 @@
         type="button"
       >
         After 2pm
-      </button>
-
-      <button
-        className={buttonClass("fullDay")}
-        onClick={() => setTimeBlock("fullDay")}
-        type="button"
-      >
-        Full Day
       </button>
     </div>
   );

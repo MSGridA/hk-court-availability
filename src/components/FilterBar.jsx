@@ -2,6 +2,30 @@
 import DistrictSelector from "./DistrictSelector";
 import TimeBlockSwitch from "./TimeBlockSwitch";
 
+function SearchIcon() {
+  return (
+    <svg
+      className="h-4 w-4"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+    </svg>
+  );
+}
+
+function getTimeBlockLabel(timeBlock) {
+  if (timeBlock === "fullDay") return "Full Day";
+  if (timeBlock === "before2pm") return "Before 2pm";
+  return "After 2pm";
+}
+
 export default function FilterBar({
   query,
   setQuery,
@@ -11,8 +35,6 @@ export default function FilterBar({
   setTimeBlock,
   availableOnly,
   setAvailableOnly,
-  sortMode,
-  setSortMode,
   resetFilters,
   refreshData,
   status,
@@ -20,6 +42,7 @@ export default function FilterBar({
   error,
 }) {
   const [open, setOpen] = useState(true);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
@@ -36,51 +59,71 @@ export default function FilterBar({
   return (
     <div className="mb-5 rounded-3xl border border-stone-200 bg-white p-4 shadow-sm sm:p-5">
       <div className="flex items-start justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <p className="text-sm font-semibold text-stone-700">Search & Filters</p>
           <p className="mt-1 text-xs text-stone-500">
-            {selectedDistrictText} · {timeBlock === "fullDay" ? "Full Day" : timeBlock === "before2pm" ? "Before 2pm" : "After 2pm"}
+            {selectedDistrictText} · {getTimeBlockLabel(timeBlock)}
             {availableOnly ? " · Available only" : ""}
+            {query ? ` · Search: ${query}` : ""}
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen(!open)}
-          className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
-        >
-          {open ? "Hide" : "Show"}
-        </button>
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(!searchOpen)}
+            className={`inline-flex h-9 w-9 items-center justify-center rounded-full border text-xs font-semibold transition ${
+              searchOpen || query
+                ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-900"
+            }`}
+            aria-label="Search venue, address, or district"
+            title="Search"
+          >
+            <SearchIcon />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold text-stone-600 transition hover:bg-stone-50 hover:text-stone-900"
+          >
+            {open ? "Hide" : "Show"}
+          </button>
+        </div>
       </div>
+
+      {searchOpen && (
+        <div className="mt-4">
+          <div className="flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-3 ring-emerald-600 transition focus-within:ring-2">
+            <span className="text-stone-400">
+              <SearchIcon />
+            </span>
+
+            <input
+              className="w-full bg-transparent text-sm outline-none"
+              placeholder="Search venue, address, or district..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              autoFocus
+            />
+
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="rounded-full px-2 py-1 text-xs font-semibold text-stone-400 hover:bg-stone-100 hover:text-stone-700"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {open && (
         <div className="mt-4">
-          <div className="grid gap-3 xl:grid-cols-[minmax(260px,1fr)_220px_620px] xl:items-end">
-            <label>
-              <span className="mb-1 block text-sm font-medium text-stone-600">
-                Search venue / address / district
-              </span>
-              <input
-                className="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 outline-none ring-emerald-600 transition focus:ring-2"
-                placeholder="Victoria Park, Sha Tin, Yuen Wo, 維園, 源禾..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </label>
-
-            <label>
-              <span className="mb-1 block text-sm font-medium text-stone-600">Sort</span>
-              <select
-                className="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 outline-none ring-emerald-600 transition focus:ring-2"
-                value={sortMode}
-                onChange={(e) => setSortMode(e.target.value)}
-              >
-                <option value="availability">Most available</option>
-                <option value="district">District</option>
-                <option value="venue">Venue name</option>
-              </select>
-            </label>
-
+          <div className="grid gap-3 xl:grid-cols-[1fr] xl:items-end">
             <div>
               <span className="mb-1 block text-sm font-medium text-stone-600">
                 Time / Availability
