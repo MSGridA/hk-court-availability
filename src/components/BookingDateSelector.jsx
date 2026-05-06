@@ -18,13 +18,13 @@ function getMonthDay(dateString) {
 }
 
 function getMobileDateLabel(index, date) {
-  if (index === 0) return "Today";
-  if (index === 1) return "Tmr";
+  if (index === 0) return "TDY";
+  if (index === 1) return "TMR";
   return getShortWeekday(date);
 }
 
 function getDesktopDateLabel(index, date) {
-  if (index === 0) return "Today";
+  if (index === 0) return "TDY";
   if (index === 1) return "Tomorrow";
   return getShortWeekday(date);
 }
@@ -52,7 +52,7 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
               }`}
             >
               <p
-                className={`truncate text-[9px] font-semibold uppercase tracking-wide md:text-[10px] ${
+                className={`truncate text-[9px] font-semibold uppercase tracking-normal md:text-[10px] md:tracking-wide ${
                   active ? "text-emerald-700" : "text-stone-400"
                 }`}
               >
@@ -70,3 +70,4 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     </div>
   );
 }
+
