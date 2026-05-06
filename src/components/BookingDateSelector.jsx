@@ -31,7 +31,7 @@ function getDesktopDateLabel(index, date) {
 
 export default function BookingDateSelector({ availableDates, selectedDate, setSelectedDate }) {
   return (
-    <div className="mb-2 rounded-2xl border border-stone-200 bg-white p-2.5 shadow-sm sm:p-3">
+    <div className="mb-1 rounded-2xl border border-stone-200 bg-white p-2.5 shadow-sm sm:p-3">
       <div className="mb-1.5 flex items-center justify-between">
         <p className="text-xs font-semibold text-stone-700 sm:text-sm">Booking Date</p>
       </div>
@@ -70,6 +70,7 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     </div>
   );
 }
+
 
 
 
