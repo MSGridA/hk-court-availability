@@ -245,6 +245,7 @@ export default function App() {
           gridRows={gridRows}
           activeSport={safeActiveSport}
           availableOnly={availableOnly}
+          selectedDate={selectedDate}
         />
 
         <AvailabilityTable
@@ -252,6 +253,7 @@ export default function App() {
           visibleHours={visibleHours}
           timeBlock={safeTimeBlock}
           activeSport={safeActiveSport}
+          selectedDate={selectedDate}
         />
       </section>
 
@@ -259,5 +261,7 @@ export default function App() {
     </main>
   );
 }
+
+
 
 

@@ -22,11 +22,39 @@ function getCellClass(count) {
   return "bg-stone-100 text-stone-300 ring-1 ring-stone-200";
 }
 
-function getHourColumnClass(hour) {
+function getCurrentHourHK(selectedDate) {
+  const now = new Date();
+
+  const dateParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Hong_Kong",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+
+  const year = dateParts.find((part) => part.type === "year")?.value;
+  const month = dateParts.find((part) => part.type === "month")?.value;
+  const day = dateParts.find((part) => part.type === "day")?.value;
+  const todayHK = `${year}-${month}-${day}`;
+
+  if (selectedDate !== todayHK) return null;
+
+  const hourText = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Hong_Kong",
+    hour: "2-digit",
+    hourCycle: "h23",
+  }).format(now);
+
+  return Number(hourText);
+}
+
+function getHourColumnClass(hour, currentHour) {
+  if (currentHour === hour) return "bg-amber-100/80 ring-1 ring-amber-200";
   return hour % 2 === 0 ? "bg-stone-200/70" : "bg-white";
 }
 
-function getHeaderHourClass(hour) {
+function getHeaderHourClass(hour, currentHour) {
+  if (currentHour === hour) return "bg-amber-200/80 text-amber-900 ring-1 ring-amber-300";
   return hour % 2 === 0 ? "bg-stone-300/60" : "";
 }
 
@@ -111,9 +139,10 @@ function MobileDrawer({ venue, onClose }) {
   );
 }
 
-export default function MobileAvailabilityList({ gridRows, activeSport }) {
+export default function MobileAvailabilityList({ gridRows, activeSport, selectedDate }) {
   const [selectedVenue, setSelectedVenue] = useState(null);
   const copy = SPORT_COPY[activeSport] || SPORT_COPY.tennis;
+  const currentHour = getCurrentHourHK(selectedDate);
 
   if (gridRows.length === 0) {
     return (
@@ -152,7 +181,10 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
               {visibleHours.map((hour) => (
                 <th
                   key={hour}
-                  className={`px-1 py-2 text-center font-semibold ${getHeaderHourClass(hour)}`}
+                  className={`px-1 py-2 text-center font-semibold ${getHeaderHourClass(
+                    hour,
+                    currentHour
+                  )}`}
                 >
                   {String(hour).padStart(2, "0")}
                 </th>
@@ -185,12 +217,17 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
                   {venue.hourly.map((cell) => (
                     <td
                       key={cell.hour}
-                      className={`px-1 py-2 text-center ${getHourColumnClass(cell.hour)}`}
+                      className={`px-1 py-2 text-center ${getHourColumnClass(
+                        cell.hour,
+                        currentHour
+                      )}`}
                     >
                       <button
                         type="button"
                         onClick={() => setSelectedVenue(venue)}
-                        className={`mx-auto flex h-[23px] w-[27px] min-w-[27px] items-center justify-center rounded-md px-1.5 text-[11px] font-bold transition ${getCellClass(cell.availableCourts)}`}
+                        className={`mx-auto flex h-[23px] w-[27px] min-w-[27px] items-center justify-center rounded-md px-1.5 text-[11px] font-bold ${getCellClass(
+                          cell.availableCourts
+                        )}`}
                       >
                         {cell.availableCourts > 0 ? cell.availableCourts : "—"}
                       </button>
@@ -207,12 +244,3 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
     </>
   );
 }
-
-
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { SMARTPLAY_URL } from "../config";
 import { makeGoogleMapUrl } from "../lib/maps";
 
@@ -25,11 +25,41 @@ function getCellClass(count) {
   return "bg-stone-100 text-stone-300 ring-1 ring-stone-200";
 }
 
-function getHourColumnClass(hour) {
+function getCurrentHourHK(selectedDate) {
+  const now = new Date();
+
+  const dateParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Hong_Kong",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+
+  const year = dateParts.find((part) => part.type === "year")?.value;
+  const month = dateParts.find((part) => part.type === "month")?.value;
+  const day = dateParts.find((part) => part.type === "day")?.value;
+  const todayHK = `${year}-${month}-${day}`;
+
+  if (selectedDate !== todayHK) return null;
+
+  const hourText = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Hong_Kong",
+    hour: "2-digit",
+    hourCycle: "h23",
+  }).format(now);
+
+  return Number(hourText);
+}
+
+function getHourColumnClass(hour, hoveredHour, currentHour) {
+  if (currentHour === hour) return "bg-amber-100/80 ring-1 ring-amber-200";
+  if (hoveredHour === hour) return "bg-emerald-50";
   return hour % 2 === 0 ? "bg-stone-200/70" : "bg-white";
 }
 
-function getHeaderHourClass(hour) {
+function getHeaderHourClass(hour, hoveredHour, currentHour) {
+  if (currentHour === hour) return "bg-amber-200/80 text-amber-900 ring-1 ring-amber-300";
+  if (hoveredHour === hour) return "bg-emerald-100 text-emerald-800";
   return hour % 2 === 0 ? "bg-stone-300/60" : "";
 }
 
@@ -38,8 +68,6 @@ function getAvailableSlots(venue) {
 }
 
 function VenueDrawer({ venue, onClose }) {
-  const drawerRef = useRef(null);
-
   useEffect(() => {
     if (!venue) return;
 
@@ -69,10 +97,7 @@ function VenueDrawer({ venue, onClose }) {
         onClick={onClose}
       />
 
-      <div
-        ref={drawerRef}
-        className="fixed bottom-4 left-1/2 z-50 hidden w-[min(920px,calc(100vw-32px))] -translate-x-1/2 rounded-3xl border border-stone-200 bg-white p-4 shadow-2xl md:block"
-      >
+      <div className="fixed bottom-4 left-1/2 z-50 hidden w-[min(920px,calc(100vw-32px))] -translate-x-1/2 rounded-3xl border border-stone-200 bg-white p-4 shadow-2xl md:block">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="mb-2 inline-flex rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-semibold text-stone-600">
@@ -81,7 +106,10 @@ function VenueDrawer({ venue, onClose }) {
             </div>
 
             <p className="font-semibold text-stone-950">{venue.nameEN}</p>
-            {venue.nameTC && <p className="mt-0.5 text-xs text-stone-600">{venue.nameTC}</p>}
+
+            {venue.nameTC && (
+              <p className="mt-0.5 text-xs text-stone-600">{venue.nameTC}</p>
+            )}
 
             <p className="mt-1 text-xs text-stone-500">
               {venue.addressEN || "Address not provided"}
@@ -91,7 +119,9 @@ function VenueDrawer({ venue, onClose }) {
             <p className="mt-2 text-xs text-stone-500">
               Available:{" "}
               {availableSlots.length > 0
-                ? availableSlots.map((cell) => `${cell.label} (${cell.availableCourts})`).join(" · ")
+                ? availableSlots
+                    .map((cell) => `${cell.label} (${cell.availableCourts})`)
+                    .join(" · ")
                 : "No available court shown in this time block."}
             </p>
           </div>
@@ -138,9 +168,18 @@ function VenueDrawer({ venue, onClose }) {
   );
 }
 
-export default function AvailabilityTable({ gridRows, visibleHours, activeSport }) {
+export default function AvailabilityTable({
+  gridRows,
+  visibleHours,
+  activeSport,
+  selectedDate,
+}) {
   const [selectedVenue, setSelectedVenue] = useState(null);
+  const [hoveredVenueId, setHoveredVenueId] = useState(null);
+  const [hoveredHour, setHoveredHour] = useState(null);
+
   const copy = SPORT_TABLE_COPY[activeSport] || SPORT_TABLE_COPY.tennis;
+  const currentHour = getCurrentHourHK(selectedDate);
 
   const venueColumnWidth = 220;
   const timeColumnWidth = 42;
@@ -148,7 +187,13 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
 
   return (
     <>
-      <div className="hidden overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:block">
+      <div
+        className="hidden overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:block"
+        onMouseLeave={() => {
+          setHoveredVenueId(null);
+          setHoveredHour(null);
+        }}
+      >
         <table
           className="w-full table-fixed border-collapse text-left text-xs"
           style={{ minWidth: `${tableMinWidth}px` }}
@@ -169,7 +214,12 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
               {visibleHours.map((hour) => (
                 <th
                   key={hour}
-                  className={`px-1 py-2 text-center font-semibold ${getHeaderHourClass(hour)}`}
+                  onMouseEnter={() => setHoveredHour(hour)}
+                  className={`px-1 py-2 text-center font-semibold transition ${getHeaderHourClass(
+                    hour,
+                    hoveredHour,
+                    currentHour
+                  )}`}
                 >
                   <span className="block">{String(hour).padStart(2, "0")}</span>
                   <span className="block text-[8px] font-normal normal-case text-stone-500">
@@ -193,16 +243,28 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
             ) : (
               gridRows.map((venue) => {
                 const selected = selectedVenue?.id === venue.id;
+                const hovered = hoveredVenueId === venue.id;
 
                 return (
                   <tr
                     key={venue.id}
-                    className={`border-t border-stone-100 align-middle hover:bg-stone-50 ${
-                      selected ? "bg-emerald-50/40" : ""
+                    onMouseEnter={() => setHoveredVenueId(venue.id)}
+                    className={`border-t border-stone-100 align-middle transition ${
+                      selected
+                        ? "bg-emerald-50/50"
+                        : hovered
+                        ? "bg-stone-100/70"
+                        : "hover:bg-stone-50"
                     }`}
                   >
                     <td
-                      className="sticky left-0 z-20 cursor-pointer bg-white px-2.5 py-1.5 shadow-[1px_0_0_0_rgba(231,229,228,1)]"
+                      className={`sticky left-0 z-20 cursor-pointer px-2.5 py-1.5 shadow-[1px_0_0_0_rgba(231,229,228,1)] transition ${
+                        selected
+                          ? "bg-emerald-50"
+                          : hovered
+                          ? "bg-stone-100"
+                          : "bg-white"
+                      }`}
                       onClick={() => setSelectedVenue(venue)}
                     >
                       <div className="min-w-0">
@@ -226,12 +288,19 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
                     {venue.hourly.map((cell) => (
                       <td
                         key={cell.hour}
-                        className={`px-1 py-1.5 text-center ${getHourColumnClass(cell.hour)}`}
+                        onMouseEnter={() => setHoveredHour(cell.hour)}
+                        className={`px-1 py-1.5 text-center transition ${getHourColumnClass(
+                          cell.hour,
+                          hoveredHour,
+                          currentHour
+                        )}`}
                       >
                         <button
                           type="button"
                           onClick={() => setSelectedVenue(venue)}
-                          className={`mx-auto flex h-[24px] w-[29px] min-w-[29px] items-center justify-center rounded-md px-1.5 text-xs font-bold transition ${getCellClass(cell.availableCourts)}`}
+                          className={`mx-auto flex h-[24px] w-[29px] min-w-[29px] items-center justify-center rounded-md px-1.5 text-xs font-bold transition ${getCellClass(
+                            cell.availableCourts
+                          )}`}
                           title={`${venue.nameEN} · ${cell.label} · ${cell.availableCourts}`}
                         >
                           {cell.availableCourts > 0 ? cell.availableCourts : "—"}
@@ -250,13 +319,3 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
     </>
   );
 }
-
-
-
-
-
-
-
-
-
-
