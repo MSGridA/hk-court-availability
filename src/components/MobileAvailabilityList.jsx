@@ -40,19 +40,28 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
 
   const firstVenue = gridRows[0];
   const visibleHours = firstVenue?.hourly?.map((cell) => cell.hour) || [];
-  const tableMinWidth = Math.max(620, 170 + visibleHours.length * 38);
+  const venueColumnWidth = 150;
+  const timeColumnWidth = 36;
+  const tableMinWidth = Math.max(560, venueColumnWidth + visibleHours.length * timeColumnWidth);
 
   return (
     <div className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:hidden">
-      <table className="w-full border-collapse text-left text-xs" style={{ minWidth: `${tableMinWidth}px` }}>
+      <table className="w-full table-fixed border-collapse text-left text-xs" style={{ minWidth: `${tableMinWidth}px` }}>
+        <colgroup>
+          <col style={{ width: `${venueColumnWidth}px` }} />
+          {visibleHours.map((hour) => (
+            <col key={hour} style={{ width: `${timeColumnWidth}px` }} />
+          ))}
+        </colgroup>
+
         <thead className="bg-stone-100 text-[9px] uppercase tracking-wide text-stone-500">
           <tr>
-            <th className="sticky left-0 z-30 w-[170px] bg-stone-100 px-2 py-2 font-semibold">
+            <th className="sticky left-0 z-30 bg-stone-100 px-2 py-2 font-semibold">
               Venue
             </th>
 
             {visibleHours.map((hour) => (
-              <th key={hour} className="w-[38px] px-1 py-2 text-center font-semibold">
+              <th key={hour} className="px-1 py-2 text-center font-semibold">
                 {String(hour).padStart(2, "0")}
               </th>
             ))}
@@ -71,22 +80,13 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
                     className="sticky left-0 z-20 cursor-pointer bg-white px-2 py-2 shadow-[1px_0_0_0_rgba(231,229,228,1)]"
                     onClick={() => toggleVenue(venue.id)}
                   >
-                    <div className="mb-0.5 inline-flex rounded-full bg-stone-100 px-1.5 py-0.5 text-[8px] font-semibold text-stone-500">
+                    <div className="mb-0.5 max-w-[130px] truncate rounded-full bg-stone-100 px-1.5 py-0.5 text-[8px] font-semibold text-stone-500">
                       {venue.districtEN}
                     </div>
 
-                    <p className="truncate text-[11px] font-semibold leading-tight text-stone-950">
+                    <p className="max-w-[130px] truncate text-[11px] font-semibold leading-tight text-stone-950">
                       {venue.nameEN}
                     </p>
-
-                    <div className="mt-0.5 flex items-center gap-1">
-                      <span className="rounded-full border border-stone-200 bg-white px-1.5 py-0.5 text-[9px] font-semibold text-stone-500">
-                        {venue.courts}
-                      </span>
-                      <span className="rounded-full border border-emerald-200 bg-emerald-50 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-700">
-                        {venue.totalAvailableCourtHours}
-                      </span>
-                    </div>
                   </td>
 
                   {venue.hourly.map((cell) => (

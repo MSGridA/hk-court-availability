@@ -1,6 +1,5 @@
 ﻿import { useState } from "react";
 import { SMARTPLAY_URL } from "../config";
-import { formatHour } from "../lib/dateTime";
 import { makeGoogleMapUrl } from "../lib/maps";
 
 const SPORT_TABLE_COPY = {
@@ -33,7 +32,10 @@ function getAvailableSlots(venue) {
 export default function AvailabilityTable({ gridRows, visibleHours, activeSport }) {
   const [expandedVenueId, setExpandedVenueId] = useState(null);
   const copy = SPORT_TABLE_COPY[activeSport] || SPORT_TABLE_COPY.tennis;
-  const tableMinWidth = Math.max(760, 270 + visibleHours.length * 46);
+
+  const venueColumnWidth = 220;
+  const timeColumnWidth = 42;
+  const tableMinWidth = Math.max(720, venueColumnWidth + visibleHours.length * timeColumnWidth);
 
   function toggleVenue(id) {
     setExpandedVenueId((current) => (current === id ? null : id));
@@ -42,17 +44,24 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
   return (
     <div className="hidden overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm md:block">
       <table
-        className="w-full border-collapse text-left text-xs"
+        className="w-full table-fixed border-collapse text-left text-xs"
         style={{ minWidth: `${tableMinWidth}px` }}
       >
+        <colgroup>
+          <col style={{ width: `${venueColumnWidth}px` }} />
+          {visibleHours.map((hour) => (
+            <col key={hour} style={{ width: `${timeColumnWidth}px` }} />
+          ))}
+        </colgroup>
+
         <thead className="sticky top-0 z-30 bg-stone-100 text-[10px] uppercase tracking-wide text-stone-500">
           <tr>
-            <th className="sticky left-0 z-40 w-[270px] bg-stone-100 px-3 py-2 font-semibold">
+            <th className="sticky left-0 z-40 bg-stone-100 px-2.5 py-2 font-semibold">
               {copy.venueLabel}
             </th>
 
             {visibleHours.map((hour) => (
-              <th key={hour} className="w-[46px] px-1 py-2 text-center font-semibold">
+              <th key={hour} className="px-1 py-2 text-center font-semibold">
                 <span className="block">{String(hour).padStart(2, "0")}</span>
                 <span className="block text-[8px] font-normal normal-case text-stone-400">
                   {String(hour + 1).padStart(2, "0")}
@@ -83,30 +92,24 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
                     }`}
                   >
                     <td
-                      className="sticky left-0 z-20 cursor-pointer bg-white px-3 py-1.5 shadow-[1px_0_0_0_rgba(231,229,228,1)]"
+                      className="sticky left-0 z-20 cursor-pointer bg-white px-2.5 py-1.5 shadow-[1px_0_0_0_rgba(231,229,228,1)]"
                       onClick={() => toggleVenue(venue.id)}
                     >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <div className="mb-1 inline-flex rounded-full bg-stone-100 px-2 py-0.5 text-[9px] font-semibold text-stone-600">
-                            {venue.districtEN}
-                            {venue.districtTC ? ` · ${venue.districtTC}` : ""}
-                          </div>
-
-                          <p className="truncate font-semibold leading-tight text-stone-950">
-                            {venue.nameEN}
-                          </p>
-
-                          {venue.nameTC && (
-                            <p className="truncate text-[11px] leading-tight text-stone-600">
-                              {venue.nameTC}
-                            </p>
-                          )}
+                      <div className="min-w-0">
+                        <div className="mb-1 max-w-full truncate rounded-full bg-stone-100 px-2 py-0.5 text-[9px] font-semibold text-stone-600">
+                          {venue.districtEN}
+                          {venue.districtTC ? ` · ${venue.districtTC}` : ""}
                         </div>
 
-                        <span className="shrink-0 rounded-full border border-stone-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-stone-500">
-                          {venue.courts}
-                        </span>
+                        <p className="max-w-[200px] truncate font-semibold leading-tight text-stone-950">
+                          {venue.nameEN}
+                        </p>
+
+                        {venue.nameTC && (
+                          <p className="mt-0.5 max-w-[200px] truncate text-[11px] leading-tight text-stone-600">
+                            {venue.nameTC}
+                          </p>
+                        )}
                       </div>
                     </td>
 
@@ -115,7 +118,7 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
                         <button
                           type="button"
                           onClick={() => toggleVenue(venue.id)}
-                          className={`mx-auto flex h-7 w-9 items-center justify-center rounded-lg text-xs font-bold transition ${getCellClass(
+                          className={`mx-auto flex h-7 w-8 items-center justify-center rounded-lg text-xs font-bold transition ${getCellClass(
                             cell.availableCourts
                           )}`}
                           title={`${venue.nameEN} · ${cell.label} · ${cell.availableCourts}`}
