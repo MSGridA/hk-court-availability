@@ -1,19 +1,19 @@
 ﻿export default function TimeBlockSwitch({ timeBlock, setTimeBlock }) {
   const buttonClass = (value) =>
-    `h-11 rounded-xl px-3 text-sm font-semibold transition ${
+    `h-9 rounded-xl px-2 text-xs font-semibold transition ${
       timeBlock === value
         ? "bg-white text-stone-950 shadow-sm"
         : "text-stone-500 hover:text-stone-800"
     }`;
 
   return (
-    <div className="grid w-[330px] shrink-0 grid-cols-3 rounded-2xl border border-stone-200 bg-stone-100 p-1 shadow-sm">
+    <div className="grid w-full max-w-[420px] shrink-0 grid-cols-4 rounded-2xl border border-stone-200 bg-stone-100 p-1 shadow-sm">
       <button
         className={buttonClass("fullDay")}
         onClick={() => setTimeBlock("fullDay")}
         type="button"
       >
-        Full Day
+        Full
       </button>
 
       <button
@@ -21,15 +21,23 @@
         onClick={() => setTimeBlock("before2pm")}
         type="button"
       >
-        Before 2pm
+        Before 2
       </button>
 
       <button
-        className={buttonClass("after2pm")}
-        onClick={() => setTimeBlock("after2pm")}
+        className={buttonClass("afternoon")}
+        onClick={() => setTimeBlock("afternoon")}
         type="button"
       >
-        After 2pm
+        2–6
+      </button>
+
+      <button
+        className={buttonClass("after6pm")}
+        onClick={() => setTimeBlock("after6pm")}
+        type="button"
+      >
+        After 6
       </button>
     </div>
   );
