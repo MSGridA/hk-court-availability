@@ -60,13 +60,8 @@ export default function FilterBar({
   status,
   error,
 }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-
-  useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    setOpen(!isMobile);
-  }, []);
 
   const selectedDistrictText =
     selectedDistricts.length === 0
@@ -76,7 +71,7 @@ export default function FilterBar({
       : `${selectedDistricts.length} districts`;
 
   return (
-    <div className="mb-5 rounded-3xl border border-stone-200 bg-white p-4 shadow-sm sm:p-5">
+    <div className="mb-3 rounded-2xl border border-stone-200 bg-white p-3 shadow-sm sm:p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm font-semibold text-stone-700">Search & Filters</p>
@@ -197,3 +192,4 @@ export default function FilterBar({
     </div>
   );
 }
+
