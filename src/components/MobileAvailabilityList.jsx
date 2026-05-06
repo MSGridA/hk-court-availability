@@ -190,9 +190,7 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
                       <button
                         type="button"
                         onClick={() => setSelectedVenue(venue)}
-                        className={`mx-auto flex h-5.5 w-6.5 items-center justify-center rounded-md text-[10px] font-bold ${getCellClass(
-                          cell.availableCourts
-                        )}`}
+                        className={`mx-auto flex h-[23px] w-[27px] min-w-[27px] items-center justify-center rounded-md px-1.5 text-[11px] font-bold transition ${getCellClass(cell.availableCourts)}`}
                       >
                         {cell.availableCourts > 0 ? cell.availableCourts : "—"}
                       </button>
@@ -209,6 +207,8 @@ export default function MobileAvailabilityList({ gridRows, activeSport }) {
     </>
   );
 }
+
+
 
 
 

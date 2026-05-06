@@ -231,9 +231,7 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
                         <button
                           type="button"
                           onClick={() => setSelectedVenue(venue)}
-                          className={`mx-auto flex h-5.5 w-6.5 items-center justify-center rounded-md text-[11px] font-bold transition ${getCellClass(
-                            cell.availableCourts
-                          )}`}
+                          className={`mx-auto flex h-[24px] w-[29px] min-w-[29px] items-center justify-center rounded-md px-1.5 text-xs font-bold transition ${getCellClass(cell.availableCourts)}`}
                           title={`${venue.nameEN} · ${cell.label} · ${cell.availableCourts}`}
                         >
                           {cell.availableCourts > 0 ? cell.availableCourts : "—"}
@@ -252,6 +250,9 @@ export default function AvailabilityTable({ gridRows, visibleHours, activeSport 
     </>
   );
 }
+
+
+
 
 
 
