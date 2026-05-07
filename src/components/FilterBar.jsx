@@ -100,6 +100,75 @@ function DistrictPanel({
   );
 }
 
+function SearchPanel({ open, onClose, query, setQuery }) {
+  useEffect(() => {
+    if (!open) return;
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <>
+      <button
+        type="button"
+        className="fixed inset-0 z-40 cursor-default bg-black/5 backdrop-blur-[1px]"
+        aria-label="Close search"
+        onClick={onClose}
+      />
+
+      <div className="fixed inset-x-3 top-24 z-50 rounded-3xl border border-stone-200 bg-white p-3 shadow-2xl md:inset-x-auto md:left-1/2 md:top-28 md:w-[min(640px,calc(100vw-48px))] md:-translate-x-1/2">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <p className="text-sm font-semibold text-stone-900">Search venue</p>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold text-stone-600 shadow-sm hover:bg-stone-50"
+          >
+            Done
+          </button>
+        </div>
+
+        <div className="flex h-11 items-center gap-2 rounded-2xl border border-stone-200 bg-white px-3 ring-emerald-600 transition focus-within:ring-2">
+          <span className="text-stone-400">
+            <SearchIcon />
+          </span>
+
+          <input
+            className="w-full bg-transparent text-sm outline-none"
+            placeholder="Search venue / district..."
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            autoFocus
+          />
+
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              className="rounded-full px-2 py-1 text-xs font-semibold text-stone-400 hover:bg-stone-100 hover:text-stone-700"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
 export default function FilterBar({
   query,
   setQuery,
@@ -154,7 +223,7 @@ export default function FilterBar({
         <div className="flex min-w-0 flex-1 items-center justify-end gap-1.5 sm:gap-2">
           <button
             type="button"
-            onClick={() => setSearchOpen(!searchOpen)}
+            onClick={() => setSearchOpen(true)}
             className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-xs font-semibold transition ${
               searchOpen || query
                 ? "border-emerald-200 bg-emerald-50 text-emerald-700"
@@ -203,27 +272,12 @@ export default function FilterBar({
         </div>
       </div>
 
-      {searchOpen && (
-        <div className="flex h-9 items-center gap-2 rounded-full border border-stone-200 bg-white px-3 shadow-sm ring-emerald-600 transition focus-within:ring-2">
-          <input
-            className="w-full bg-transparent text-xs outline-none"
-            placeholder="Search venue / district..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            autoFocus
-          />
-
-          {query && (
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              className="text-[11px] font-semibold text-stone-400 hover:text-stone-700"
-            >
-              Clear
-            </button>
-          )}
-        </div>
-      )}
+      <SearchPanel
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        query={query}
+        setQuery={setQuery}
+      />
 
       <DistrictPanel
         open={districtOpen}
@@ -240,10 +294,3 @@ export default function FilterBar({
     </div>
   );
 }
-
-
-
-
-
-
-
