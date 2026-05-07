@@ -172,7 +172,7 @@ export default function App() {
   return (
     <main className="min-h-screen bg-stone-50 text-stone-950">
       <section className="border-b border-stone-200 bg-white">
-        <div className="mx-auto max-w-[1900px] px-4 py-2 sm:px-6 sm:py-3 lg:px-8">
+        <div className="mx-auto max-w-[1900px] px-4 pt-2 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:px-6 sm:py-3 lg:px-8">
           <p className="mb-2 inline-flex rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-800 sm:px-3 sm:py-1 sm:text-xs">
             {copy.badge}
           </p>
@@ -215,7 +215,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1900px] px-4 py-2 sm:px-6 sm:py-3 lg:px-8">
+      <section className="mx-auto max-w-[1900px] px-4 pt-2 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:px-6 sm:py-3 lg:px-8">
         <div className="md:hidden">
           <SummaryCards activeSport={safeActiveSport} setActiveSport={setActiveSport} />
         </div>
@@ -262,6 +262,7 @@ export default function App() {
     </main>
   );
 }
+
 
 
 
