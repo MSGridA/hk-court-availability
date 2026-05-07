@@ -173,6 +173,7 @@ export default function AvailabilityTable({
   visibleHours,
   activeSport,
   selectedDate,
+  status,
 }) {
   const [selectedVenue, setSelectedVenue] = useState(null);
   const [hoveredVenueId, setHoveredVenueId] = useState(null);
@@ -237,7 +238,7 @@ export default function AvailabilityTable({
                   className="px-4 py-8 text-center text-stone-500"
                   colSpan={visibleHours.length + 1}
                 >
-                  {copy.noResult}
+                  {status === "loading" ? "Loading live availability..." : copy.noResult}
                 </td>
               </tr>
             ) : (
@@ -325,6 +326,7 @@ export default function AvailabilityTable({
     </>
   );
 }
+
 
 
 

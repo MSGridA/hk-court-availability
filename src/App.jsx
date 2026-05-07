@@ -247,6 +247,7 @@ export default function App() {
           activeSport={safeActiveSport}
           availableOnly={availableOnly}
           selectedDate={selectedDate}
+          status={status}
         />
 
         <AvailabilityTable
@@ -255,6 +256,7 @@ export default function App() {
           timeBlock={safeTimeBlock}
           activeSport={safeActiveSport}
           selectedDate={selectedDate}
+          status={status}
         />
       </section>
 
@@ -262,6 +264,7 @@ export default function App() {
     </main>
   );
 }
+
 
 
 

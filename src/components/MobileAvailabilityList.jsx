@@ -139,7 +139,7 @@ function MobileDrawer({ venue, onClose }) {
   );
 }
 
-export default function MobileAvailabilityList({ gridRows, activeSport, selectedDate }) {
+export default function MobileAvailabilityList({ gridRows, activeSport, selectedDate, status }) {
   const [selectedVenue, setSelectedVenue] = useState(null);
   const gridScrollRef = useRef(null);
 
@@ -173,7 +173,7 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
   if (gridRows.length === 0) {
     return (
       <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm md:hidden">
-        <p className="text-sm font-medium text-stone-500">{copy.empty}</p>
+        <p className="text-sm font-medium text-stone-500">{status === "loading" ? "Loading live availability..." : copy.empty}</p>
       </div>
     );
   }
@@ -270,6 +270,7 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
     </>
   );
 }
+
 
 
 
