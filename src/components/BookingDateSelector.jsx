@@ -24,17 +24,25 @@ function getMobileDateLabel(index, date) {
 }
 
 function getDesktopDateLabel(index, date) {
-  if (index === 0) return "TDY";
+  if (index === 0) return "Today";
   if (index === 1) return "Tomorrow";
   return getShortWeekday(date);
 }
 
-export default function BookingDateSelector({ availableDates, selectedDate, setSelectedDate }) {
+export default function BookingDateSelector({
+  availableDates,
+  selectedDate,
+  setSelectedDate,
+}) {
   return (
-    <div className="-mt-4 mb-1 rounded-2xl border border-stone-200 bg-white p-2.5 shadow-sm sm:mt-0 sm:p-3">
-      <div className="mb-1.5 hidden items-center justify-between sm:flex"><p className="text-xs font-semibold text-stone-700 sm:text-sm">Booking Date</p></div>
+    <div className="-mt-4 mb-1 bg-transparent p-0 shadow-none sm:mt-0 sm:rounded-2xl sm:border sm:border-stone-200 sm:bg-white sm:p-3 sm:shadow-sm">
+      <div className="mb-1.5 hidden items-center justify-between sm:flex">
+        <p className="text-xs font-semibold text-stone-700 sm:text-sm">
+          Booking Date
+        </p>
+      </div>
 
-      <div className="grid grid-cols-7 gap-1.5 md:gap-2">
+      <div className="grid w-full grid-cols-7 gap-1.5">
         {availableDates.map((date, index) => {
           const active = selectedDate === date;
 
@@ -43,22 +51,26 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
               key={date}
               type="button"
               onClick={() => setSelectedDate(date)}
-              className={`flex min-w-0 flex-col items-center justify-center rounded-xl border px-1 py-1.5 text-center shadow-sm transition md:px-2 md:py-2 ${
+              className={`flex min-w-0 flex-col items-center justify-center rounded-xl border px-0.5 py-1.5 text-center shadow-sm transition sm:px-2 sm:py-2 ${
                 active
                   ? "border-emerald-300 bg-emerald-50 ring-1 ring-emerald-100"
                   : "border-stone-200 bg-white hover:border-stone-300 hover:bg-stone-50"
               }`}
             >
               <p
-                className={`w-full text-center text-[9px] font-semibold uppercase tracking-normal leading-none md:text-[10px] md:tracking-wide ${
+                className={`w-full text-center text-[9px] font-semibold uppercase leading-none tracking-normal sm:text-[10px] sm:tracking-wide ${
                   active ? "text-emerald-700" : "text-stone-400"
                 }`}
               >
-                <span className="md:hidden">{getMobileDateLabel(index, date)}</span>
-                <span className="hidden md:inline">{getDesktopDateLabel(index, date)}</span>
+                <span className="sm:hidden">
+                  {getMobileDateLabel(index, date)}
+                </span>
+                <span className="hidden sm:inline">
+                  {getDesktopDateLabel(index, date)}
+                </span>
               </p>
 
-              <p className="mt-1 text-center text-sm font-semibold leading-none text-stone-950 md:text-lg">
+              <p className="mt-1 text-center text-[20px] font-semibold leading-none text-stone-950 sm:text-lg">
                 {getMonthDay(date)}
               </p>
             </button>
@@ -68,10 +80,6 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     </div>
   );
 }
-
-
-
-
 
 
 
