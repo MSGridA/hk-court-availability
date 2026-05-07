@@ -73,7 +73,7 @@ function DistrictPanel({
         onClick={onClose}
       />
 
-      <div className="fixed inset-x-0 bottom-0 z-50 max-h-[88dvh] overflow-y-auto rounded-t-3xl border border-stone-200 bg-white p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-2xl md:inset-x-auto md:bottom-auto md:left-1/2 md:top-28 md:w-[min(900px,calc(100vw-48px))] md:max-h-[78vh] md:-translate-x-1/2 md:rounded-3xl md:pb-3">
+      <div className="fixed inset-x-0 bottom-0 z-50 flex h-[92dvh] flex-col overflow-hidden rounded-t-3xl border border-stone-200 bg-white p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-2xl md:inset-x-auto md:bottom-auto md:left-1/2 md:top-28 md:h-auto md:max-h-[78vh] md:w-[min(900px,calc(100vw-48px))] md:-translate-x-1/2 md:rounded-3xl md:pb-3">
         <div className="mb-3 flex items-center justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-stone-900">Districts</p>
@@ -89,10 +89,12 @@ function DistrictPanel({
           </button>
         </div>
 
-        <DistrictSelector
-          selectedDistricts={selectedDistricts}
-          setSelectedDistricts={setSelectedDistricts}
-        />
+        <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+          <DistrictSelector
+            selectedDistricts={selectedDistricts}
+            setSelectedDistricts={setSelectedDistricts}
+          />
+        </div>
       </div>
     </>
   );
@@ -233,6 +235,9 @@ export default function FilterBar({
     </div>
   );
 }
+
+
+
 
 
 
