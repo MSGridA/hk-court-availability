@@ -70,7 +70,7 @@ export default function BookingDateSelector({
                 </span>
               </p>
 
-              <p className="mt-1 text-center text-[18px] font-semibold leading-none text-stone-950 sm:text-lg">
+              <p className="mt-1 text-center text-[clamp(15px,3.8vw,16px)] font-semibold leading-none text-stone-950 sm:text-[clamp(21px,1.8vw,23px)]">
                 {getMonthDay(date)}
               </p>
             </button>
@@ -80,6 +80,7 @@ export default function BookingDateSelector({
     </div>
   );
 }
+
 
 
 
