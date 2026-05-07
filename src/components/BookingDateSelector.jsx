@@ -43,7 +43,7 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
               key={date}
               type="button"
               onClick={() => setSelectedDate(date)}
-              className={`flex min-w-0 flex-col items-center justify-center rounded-xl border px-1 py-1.5 text-center transition md:px-2 md:py-2 ${
+              className={`flex min-w-0 flex-col items-center justify-center rounded-xl border px-1 py-1.5 text-center shadow-sm transition md:px-2 md:py-2 ${
                 active
                   ? "border-emerald-300 bg-emerald-50 ring-1 ring-emerald-100"
                   : "border-stone-200 bg-white hover:border-stone-300 hover:bg-stone-50"
@@ -68,6 +68,7 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     </div>
   );
 }
+
 
 
 
