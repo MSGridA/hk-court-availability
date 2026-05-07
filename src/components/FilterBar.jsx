@@ -169,11 +169,16 @@ export default function FilterBar({
           <button
             type="button"
             onClick={refreshData}
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-xs font-semibold text-stone-600 shadow-sm transition hover:bg-stone-50 hover:text-stone-900"
+            disabled={status === "loading"}
+            className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-xs font-semibold text-stone-600 shadow-sm transition hover:bg-stone-50 hover:text-stone-900 ${
+              status === "loading" ? "cursor-wait opacity-70" : ""
+            }`}
             aria-label="Refresh live data"
             title="Refresh"
           >
-            <RefreshIcon />
+            <span className={status === "loading" ? "animate-spin" : ""}>
+              <RefreshIcon />
+            </span>
           </button>
 
           <button
@@ -235,6 +240,7 @@ export default function FilterBar({
     </div>
   );
 }
+
 
 
 
