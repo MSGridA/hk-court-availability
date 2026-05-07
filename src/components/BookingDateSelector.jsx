@@ -32,9 +32,7 @@ function getDesktopDateLabel(index, date) {
 export default function BookingDateSelector({ availableDates, selectedDate, setSelectedDate }) {
   return (
     <div className="-mt-4 mb-1 rounded-2xl border border-stone-200 bg-white p-2.5 shadow-sm sm:mt-0 sm:p-3">
-      <div className="mb-1.5 flex items-center justify-between">
-        <p className="text-xs font-semibold text-stone-700 sm:text-sm">Booking Date</p>
-      </div>
+      <div className="mb-1.5 hidden items-center justify-between sm:flex"><p className="text-xs font-semibold text-stone-700 sm:text-sm">Booking Date</p></div>
 
       <div className="grid grid-cols-7 gap-1.5 md:gap-2">
         {availableDates.map((date, index) => {
@@ -70,6 +68,7 @@ export default function BookingDateSelector({ availableDates, selectedDate, setS
     </div>
   );
 }
+
 
 
 
