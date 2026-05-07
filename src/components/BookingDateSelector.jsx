@@ -35,7 +35,7 @@ export default function BookingDateSelector({
   setSelectedDate,
 }) {
   return (
-    <div className="-mt-4 mb-1 bg-transparent p-0 shadow-none sm:mt-0 sm:rounded-2xl sm:border sm:border-stone-200 sm:bg-white sm:p-3 sm:shadow-sm">
+    <div className="-mt-2.5 mb-1 bg-transparent p-0 shadow-none sm:mt-0 sm:rounded-2xl sm:border sm:border-stone-200 sm:bg-white sm:p-3 sm:shadow-sm">
       <div className="mb-1.5 hidden items-center justify-between sm:flex">
         <p className="text-xs font-semibold text-stone-700 sm:text-sm">
           Booking Date
@@ -70,7 +70,7 @@ export default function BookingDateSelector({
                 </span>
               </p>
 
-              <p className="mt-1 text-center text-[20px] font-semibold leading-none text-stone-950 sm:text-lg">
+              <p className="mt-1 text-center text-[18px] font-semibold leading-none text-stone-950 sm:text-lg">
                 {getMonthDay(date)}
               </p>
             </button>
@@ -80,6 +80,7 @@ export default function BookingDateSelector({
     </div>
   );
 }
+
 
 
 
