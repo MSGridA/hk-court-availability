@@ -206,7 +206,7 @@ export default function FilterBar({
       {searchOpen && (
         <div className="flex h-9 items-center gap-2 rounded-full border border-stone-200 bg-white px-3 shadow-sm ring-emerald-600 transition focus-within:ring-2">
           <input
-            className="w-full bg-transparent text-xs outline-none"
+            className="w-full bg-transparent text-[16px] leading-none outline-none"
             placeholder="Search venue / district..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -240,6 +240,7 @@ export default function FilterBar({
     </div>
   );
 }
+
 
 
 
