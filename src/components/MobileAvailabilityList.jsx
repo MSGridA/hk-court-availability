@@ -232,7 +232,10 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
                       {venue.districtEN}
                     </div>
 
-                    <p className="max-w-[130px] truncate text-[11px] font-semibold leading-tight text-stone-950">
+                    <p
+                      className="max-w-[130px] truncate text-[11px] font-semibold leading-tight text-stone-950"
+                      title={venue.nameEN}
+                    >
                       {venue.nameEN}
                     </p>
                   </td>
@@ -267,5 +270,6 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
     </>
   );
 }
+
 
 

@@ -273,12 +273,18 @@ export default function AvailabilityTable({
                           {venue.districtTC ? ` · ${venue.districtTC}` : ""}
                         </div>
 
-                        <p className="max-w-[200px] truncate font-semibold leading-tight text-stone-950">
+                        <p
+                          className="max-w-[200px] truncate font-semibold leading-tight text-stone-950"
+                          title={venue.nameEN}
+                        >
                           {venue.nameEN}
                         </p>
 
                         {venue.nameTC && (
-                          <p className="mt-0.5 max-w-[200px] truncate text-[11px] leading-tight text-stone-600">
+                          <p
+                            className="mt-0.5 max-w-[200px] truncate text-[11px] leading-tight text-stone-600"
+                            title={venue.nameTC}
+                          >
                             {venue.nameTC}
                           </p>
                         )}
@@ -319,5 +325,6 @@ export default function AvailabilityTable({
     </>
   );
 }
+
 
 
