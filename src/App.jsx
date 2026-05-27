@@ -250,7 +250,7 @@ export default function App() {
       </section>
 
       <section className="mx-auto max-w-[1900px] px-4 pt-2 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:px-6 sm:py-3 lg:px-8">
-        <div className="mb-0 md:hidden">
+        <div className="mb-4 md:hidden">
           <SummaryCards
             activeSport={safeActiveSport}
             setActiveSport={setActiveSport}
@@ -305,3 +305,4 @@ export default function App() {
     </main>
   );
 }
+
