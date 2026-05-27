@@ -1,5 +1,6 @@
 ﻿import { SPORTS_CONFIG } from "../config";
 import { SAMPLE_AVAILABILITY, SAMPLE_VENUES } from "../data/sampleData";
+import { EXTERNAL_TENNIS_VENUES } from "../data/externalTennisVenues";
 import { dmsToDecimal, normalizeKey, safeText } from "../lib/normalize";
 
 async function fetchJson(url) {
@@ -150,6 +151,17 @@ function buildVenuesFromAvailability(availabilityRows) {
   return Array.from(map.values());
 }
 
+
+function addExternalTennisVenues(sportId, venues) {
+  if (sportId !== "tennis") return venues;
+
+  const existingIds = new Set(venues.map((venue) => venue.id));
+  const externalVenues = EXTERNAL_TENNIS_VENUES.filter(
+    (venue) => !existingIds.has(venue.id)
+  );
+
+  return [...venues, ...externalVenues];
+}
 export async function loadSportData(sportId) {
   const config = SPORTS_CONFIG[sportId];
 
@@ -186,7 +198,7 @@ export async function loadSportData(sportId) {
     }
 
     return {
-      venues,
+      venues: addExternalTennisVenues(sportId, venues),
       availability,
       status: "ready",
       error: "",
@@ -194,7 +206,7 @@ export async function loadSportData(sportId) {
   } catch (err) {
     if (sportId === "tennis") {
       return {
-        venues: SAMPLE_VENUES.map(normalizeVenue),
+        venues: [...SAMPLE_VENUES.map(normalizeVenue), ...EXTERNAL_TENNIS_VENUES],
         availability: SAMPLE_AVAILABILITY.map(normalizeAvailability),
         status: "sample",
         error: err.message || "Unable to load live LCSD data. Showing sample data instead.",
@@ -209,4 +221,6 @@ export async function loadSportData(sportId) {
     };
   }
 }
+
+
 

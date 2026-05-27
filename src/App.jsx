@@ -57,6 +57,12 @@ function getSafeDistricts(value) {
   return Array.isArray(value) ? value : [];
 }
 
+function normalizeSearchValue(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, "");
+}
 function sortRows(rows) {
   return [...rows].sort(
     (a, b) =>
@@ -148,6 +154,7 @@ export default function App() {
   const gridRows = useMemo(() => {
     const rows = buildVenueGrid(venues, availability, selectedDate, visibleHours);
     const search = query.trim().toLowerCase();
+    const normalizedSearch = normalizeSearchValue(query);
     const allDistricts = safeSelectedDistricts.length === 0;
 
     const filtered = rows.filter((row) => {
@@ -157,7 +164,7 @@ export default function App() {
 
       if (!search) return true;
 
-      return [
+      const searchableText = [
         row.districtEN,
         row.districtTC,
         row.nameEN,
@@ -165,10 +172,20 @@ export default function App() {
         row.addressEN,
         row.addressTC,
         row.phone,
+        row.openingEN,
+        row.openingTC,
+        row.remarksEN,
+        row.remarksTC,
+        Array.isArray(row.searchTerms) ? row.searchTerms.join(" ") : row.searchTerms,
       ]
+        .filter(Boolean)
         .join(" ")
-        .toLowerCase()
-        .includes(search);
+        .toLowerCase();
+
+      return (
+        searchableText.includes(search) ||
+        normalizeSearchValue(searchableText).includes(normalizedSearch)
+      );
     });
 
     return sortRows(filtered);
@@ -305,4 +322,7 @@ export default function App() {
     </main>
   );
 }
+
+
+
 

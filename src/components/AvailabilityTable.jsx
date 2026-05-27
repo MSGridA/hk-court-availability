@@ -67,7 +67,7 @@ function getAvailableSlots(venue) {
   return venue.hourly.filter((cell) => cell.availableCourts > 0);
 }
 
-function VenueDrawer({ venue, onClose }) {
+function VenueDrawer({ venue, onClose, language = "en" }) {
   useEffect(() => {
     if (!venue) return;
 
@@ -147,7 +147,7 @@ function VenueDrawer({ venue, onClose }) {
 
             <a
               className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 font-semibold text-emerald-700 hover:bg-emerald-100"
-              href={SMARTPLAY_URL}
+              href={venue.bookingUrl || SMARTPLAY_URL}
               target="_blank"
               rel="noreferrer"
             >
@@ -323,10 +323,11 @@ export default function AvailabilityTable({
         </table>
       </div>
 
-      <VenueDrawer venue={selectedVenue} onClose={() => setSelectedVenue(null)} />
+      <VenueDrawer venue={selectedVenue} onClose={() => setSelectedVenue(null)} language={language} />
     </>
   );
 }
+
 
 
 
