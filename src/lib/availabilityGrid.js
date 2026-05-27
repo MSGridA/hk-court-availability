@@ -61,10 +61,23 @@ export function buildVenueGrid(venues, availability, selectedDate, visibleHours)
           0
         );
 
+        const hasApproximateCount = matchingSlots.some(
+          (slot) => slot.countIsExact === false || slot.countType === "binary"
+        );
+
+        const displayCourts =
+          availableCourts > 0 && hasApproximateCount
+            ? "≥1"
+            : availableCourts > 0
+            ? String(availableCourts)
+            : "—";
+
         return {
           hour,
           label: formatHourRange(hour),
           availableCourts,
+          displayCourts,
+          hasApproximateCount,
           matchingSlots,
         };
       });

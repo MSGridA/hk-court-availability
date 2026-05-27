@@ -67,6 +67,10 @@ function getAvailableSlots(venue) {
   return venue.hourly.filter((cell) => cell.availableCourts > 0);
 }
 
+function getCellDisplay(cell) {
+  return cell.displayCourts ?? (cell.availableCourts > 0 ? cell.availableCourts : "—");
+}
+
 function VenueDrawer({ venue, onClose, language = "en" }) {
   useEffect(() => {
     if (!venue) return;
@@ -120,7 +124,7 @@ function VenueDrawer({ venue, onClose, language = "en" }) {
               Available:{" "}
               {availableSlots.length > 0
                 ? availableSlots
-                    .map((cell) => `${cell.label} (${cell.availableCourts})`)
+                    .map((cell) => `${cell.label} (${getCellDisplay(cell)})`)
                     .join(" · ")
                 : "No available court shown in this time block."}
             </p>
@@ -309,9 +313,9 @@ export default function AvailabilityTable({
                           className={`mx-auto flex h-[24px] w-[29px] min-w-[29px] items-center justify-center rounded-md px-1.5 text-xs font-bold transition ${getCellClass(
                             cell.availableCourts
                           )}`}
-                          title={`${venue.nameEN} · ${cell.label} · ${cell.availableCourts}`}
+                          title={`${venue.nameEN} · ${cell.label} · ${getCellDisplay(cell)}`}
                         >
-                          {cell.availableCourts > 0 ? cell.availableCourts : "—"}
+                          {getCellDisplay(cell)}
                         </button>
                       </td>
                     ))}

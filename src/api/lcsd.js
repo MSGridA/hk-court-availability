@@ -1,6 +1,7 @@
 ﻿import { SPORTS_CONFIG } from "../config";
 import { SAMPLE_AVAILABILITY, SAMPLE_VENUES } from "../data/sampleData";
 import { EXTERNAL_TENNIS_VENUES } from "../data/externalTennisVenues";
+import { loadExternalTennisAvailability } from "./externalTennis";
 import { dmsToDecimal, normalizeKey, safeText } from "../lib/normalize";
 
 async function fetchJson(url) {
@@ -177,7 +178,7 @@ export async function loadSportData(sportId) {
   try {
     const availabilityPayload = await fetchJson(config.availabilityUrl);
 
-    const availability = extractRows(availabilityPayload)
+    let availability = extractRows(availabilityPayload)
       .map(normalizeAvailability)
       .filter((slot) => slot.venueEN || slot.venueTC);
 
@@ -193,12 +194,19 @@ export async function loadSportData(sportId) {
       venues = buildVenuesFromAvailability(availability);
     }
 
+    venues = addExternalTennisVenues(sportId, venues);
+
+    if (sportId === "tennis") {
+      const externalAvailability = await loadExternalTennisAvailability();
+      availability = [...availability, ...externalAvailability];
+    }
+
     if (!venues.length) {
       throw new Error(`No ${sportId} venues found.`);
     }
 
     return {
-      venues: addExternalTennisVenues(sportId, venues),
+      venues,
       availability,
       status: "ready",
       error: "",

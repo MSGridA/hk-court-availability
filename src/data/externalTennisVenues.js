@@ -11,8 +11,8 @@
     openingEN: "Mon - Sun 08:00 - 22:00",
     openingTC: "星期一至日 08:00 - 22:00",
     phone: "3168 2528",
-    remarksEN: "External venue. Live availability is not yet connected.",
-    remarksTC: "外部場地，暫未接駁即時空位。",
+    remarksEN: "External venue. Live availability connected from GO PARK booking system.",
+    remarksTC: "外部場地，已接駁GO PARK即時空位。",
     longitude: "114.265656",
     latitude: "22.427114",
     source: "external",
@@ -42,8 +42,8 @@
     openingEN: "Mon - Sun 07:00 - 23:00",
     openingTC: "星期一至日 07:00 - 23:00",
     phone: "",
-    remarksEN: "External venue. Live availability is not yet connected.",
-    remarksTC: "外部場地，暫未接駁即時空位。",
+    remarksEN: "External venue. Live availability connected from GO PARK booking system.",
+    remarksTC: "外部場地，已接駁GO PARK即時空位。",
     longitude: "114.197205",
     latitude: "22.322422",
     source: "external",
@@ -62,3 +62,5 @@
     ],
   },
 ];
+
+

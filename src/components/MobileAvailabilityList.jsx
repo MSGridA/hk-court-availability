@@ -62,6 +62,10 @@ function getAvailableSlots(venue) {
   return venue.hourly.filter((cell) => cell.availableCourts > 0);
 }
 
+function getCellDisplay(cell) {
+  return cell.displayCourts ?? (cell.availableCourts > 0 ? cell.availableCourts : "—");
+}
+
 function getVenueName(venue, language) {
   if (language === "en") return venue.nameEN || venue.nameTC;
   return venue.nameTC || venue.nameEN;
@@ -119,7 +123,7 @@ function MobileDrawer({ venue, onClose, language }) {
         <p className="mt-2 text-xs text-stone-500">
           Available:{" "}
           {availableSlots.length > 0
-            ? availableSlots.map((cell) => `${cell.label} (${cell.availableCourts})`).join(" · ")
+            ? availableSlots.map((cell) => `${cell.label} (${getCellDisplay(cell)})`).join(" · ")
             : "No available court shown."}
         </p>
 
@@ -279,7 +283,7 @@ export default function MobileAvailabilityList({
                           cell.availableCourts
                         )}`}
                       >
-                        {cell.availableCourts > 0 ? cell.availableCourts : "—"}
+                        {getCellDisplay(cell)}
                       </button>
                     </td>
                   ))}
