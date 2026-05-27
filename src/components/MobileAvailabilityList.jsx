@@ -62,7 +62,17 @@ function getAvailableSlots(venue) {
   return venue.hourly.filter((cell) => cell.availableCourts > 0);
 }
 
-function MobileDrawer({ venue, onClose }) {
+function getVenueName(venue, language) {
+  if (language === "en") return venue.nameEN || venue.nameTC;
+  return venue.nameTC || venue.nameEN;
+}
+
+function getSecondaryVenueName(venue, language) {
+  if (language === "en") return venue.nameTC;
+  return venue.nameEN;
+}
+
+function MobileDrawer({ venue, onClose, language }) {
   useEffect(() => {
     if (!venue) return;
 
@@ -82,6 +92,7 @@ function MobileDrawer({ venue, onClose }) {
   if (!venue) return null;
 
   const availableSlots = getAvailableSlots(venue);
+  const secondaryName = getSecondaryVenueName(venue, language);
 
   return (
     <>
@@ -94,11 +105,16 @@ function MobileDrawer({ venue, onClose }) {
 
       <div className="fixed inset-x-3 bottom-3 z-50 rounded-3xl border border-stone-200 bg-white p-4 shadow-2xl md:hidden">
         <div className="mb-2 inline-flex rounded-full bg-stone-100 px-2 py-0.5 text-[9px] font-semibold text-stone-500">
-          {venue.districtEN}
+          {language === "tc" ? venue.districtTC || venue.districtEN : venue.districtEN}
         </div>
 
-        <p className="font-semibold text-stone-950">{venue.nameEN}</p>
-        {venue.nameTC && <p className="mt-0.5 text-xs text-stone-600">{venue.nameTC}</p>}
+        <p className="font-semibold text-stone-950">
+          {getVenueName(venue, language)}
+        </p>
+
+        {secondaryName && (
+          <p className="mt-0.5 text-xs text-stone-600">{secondaryName}</p>
+        )}
 
         <p className="mt-2 text-xs text-stone-500">
           Available:{" "}
@@ -139,7 +155,13 @@ function MobileDrawer({ venue, onClose }) {
   );
 }
 
-export default function MobileAvailabilityList({ gridRows, activeSport, selectedDate, status }) {
+export default function MobileAvailabilityList({
+  gridRows,
+  activeSport,
+  selectedDate,
+  status,
+  language = "tc",
+}) {
   const [selectedVenue, setSelectedVenue] = useState(null);
   const gridScrollRef = useRef(null);
 
@@ -173,7 +195,9 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
   if (gridRows.length === 0) {
     return (
       <div className="rounded-2xl border border-stone-200 bg-white p-6 text-center shadow-sm md:hidden">
-        <p className="text-sm font-medium text-stone-500">{status === "loading" ? "Loading live availability..." : copy.empty}</p>
+        <p className="text-sm font-medium text-stone-500">
+          {status === "loading" ? "Loading live availability..." : copy.empty}
+        </p>
       </div>
     );
   }
@@ -229,14 +253,14 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
                     onClick={() => setSelectedVenue(venue)}
                   >
                     <div className="mb-0.5 max-w-[130px] truncate rounded-full bg-stone-100 px-1.5 py-0.5 text-[8px] font-semibold text-stone-500">
-                      {venue.districtEN}
+                      {language === "tc" ? venue.districtTC || venue.districtEN : venue.districtEN}
                     </div>
 
                     <p
                       className="max-w-[130px] truncate text-[11px] font-semibold leading-tight text-stone-950"
-                      title={venue.nameEN}
+                      title={getVenueName(venue, language)}
                     >
-                      {venue.nameEN}
+                      {getVenueName(venue, language)}
                     </p>
                   </td>
 
@@ -266,7 +290,11 @@ export default function MobileAvailabilityList({ gridRows, activeSport, selected
         </table>
       </div>
 
-      <MobileDrawer venue={selectedVenue} onClose={() => setSelectedVenue(null)} />
+      <MobileDrawer
+        venue={selectedVenue}
+        onClose={() => setSelectedVenue(null)}
+        language={language}
+      />
     </>
   );
 }

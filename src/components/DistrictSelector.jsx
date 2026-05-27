@@ -9,7 +9,16 @@ function isGroupSelected(selectedDistricts, group) {
   return group.districts.every((district) => selectedDistricts.includes(district.value));
 }
 
-export default function DistrictSelector({ selectedDistricts, setSelectedDistricts }) {
+function getLabel(item, language) {
+  if (language === "tc") return item.labelTC || item.label;
+  return item.label || item.labelTC;
+}
+
+export default function DistrictSelector({
+  selectedDistricts,
+  setSelectedDistricts,
+  language = "en",
+}) {
   const allSelected = selectedDistricts.length === 0;
 
   function selectAll() {
@@ -61,7 +70,7 @@ export default function DistrictSelector({ selectedDistricts, setSelectedDistric
               : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
           }`}
         >
-          All districts
+          {language === "tc" ? "全部地區" : "All districts"}
         </button>
 
         {DISTRICT_GROUPS.map((group) => {
@@ -78,7 +87,7 @@ export default function DistrictSelector({ selectedDistricts, setSelectedDistric
                   : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
               }`}
             >
-              {group.label}
+              {getLabel(group, language)}
             </button>
           );
         })}
@@ -88,7 +97,7 @@ export default function DistrictSelector({ selectedDistricts, setSelectedDistric
         {DISTRICT_GROUPS.map((group) => (
           <div key={group.id} className="rounded-2xl border border-stone-200 bg-stone-50 p-3">
             <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-stone-400">
-              {group.label} · {group.labelTC}
+              {getLabel(group, language)}
             </p>
 
             <div className="flex flex-wrap gap-2">
@@ -106,7 +115,7 @@ export default function DistrictSelector({ selectedDistricts, setSelectedDistric
                         : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
                     }`}
                   >
-                    {district.label} · {district.labelTC}
+                    {getLabel(district, language)}
                   </button>
                 );
               })}

@@ -101,8 +101,8 @@ function VenueDrawer({ venue, onClose }) {
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="mb-2 inline-flex rounded-full bg-stone-100 px-2.5 py-1 text-[10px] font-semibold text-stone-600">
-              {venue.districtEN}
-              {venue.districtTC ? ` · ${venue.districtTC}` : ""}
+              {language === "tc" ? venue.districtTC || venue.districtEN : venue.districtEN}
+              {language === "tc" ? "" : venue.districtTC ? ` · ${venue.districtTC}` : ""}
             </div>
 
             <p className="font-semibold text-stone-950">{venue.nameEN}</p>
@@ -174,6 +174,7 @@ export default function AvailabilityTable({
   activeSport,
   selectedDate,
   status,
+  language = "en",
 }) {
   const [selectedVenue, setSelectedVenue] = useState(null);
   const [hoveredVenueId, setHoveredVenueId] = useState(null);
@@ -270,8 +271,8 @@ export default function AvailabilityTable({
                     >
                       <div className="min-w-0">
                         <div className="mb-1 max-w-full truncate rounded-full bg-stone-100 px-2 py-0.5 text-[9px] font-semibold text-stone-600">
-                          {venue.districtEN}
-                          {venue.districtTC ? ` · ${venue.districtTC}` : ""}
+                          {language === "tc" ? venue.districtTC || venue.districtEN : venue.districtEN}
+                          {language === "tc" ? "" : venue.districtTC ? ` · ${venue.districtTC}` : ""}
                         </div>
 
                         <p
@@ -326,6 +327,12 @@ export default function AvailabilityTable({
     </>
   );
 }
+
+
+
+
+
+
 
 
 
